@@ -1,0 +1,17 @@
+{
+  "name": "IRC",
+  "developer": {
+    "name": "Nick & Louis"
+  },
+  "description": "An IRC client",
+  "launch_path": "/index.html",
+  "permissions": {
+    "tcp-socket": {
+      "description": "tcp"
+    }
+  },
+  "icons": {
+    "128": "/128.png"
+  },
+  "type": "privileged"
+}

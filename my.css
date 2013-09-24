@@ -1,0 +1,25 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+button {
+  width: 75px;
+  height: 75px;
+}
+input[type=text] {
+  display: block;
+}
+x-deck {
+  background: orange;
+}
+x-card {
+  padding: 10px;
+}
+x-card:first-child {
+  background: pink;
+}
+x-card:nth-child(2) {
+  background: lightblue;
+}
+

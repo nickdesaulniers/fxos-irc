@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <link rel="stylesheet" href="brick.css"/>
+    <link rel="stylesheet" href="my.css"/>
+    <script src="brick.js"></script>
+    <script src="node-irc/lib/codes.js"></script>
+    <script src="node-irc/lib/irc.js"></script>
+    <script src="my.js"></script>
+    <x-layout>
+      <header>
+        <x-appbar heading="Servers"></x-appbar>
+      </header>
+      <section>
+      <x-deck transition-type="flipX">
+        <x-card>
+          <input type="text" placeholder="host" id="host"/>
+          <input type="text" placeholder="username" id="username"/>
+          <button id="connect">Connect</button>
+        </x-card>
+        <x-card>
+          <p>page2</p>
+        </x-card>
+      </x-deck>
+      </section>
+      <footer>
+        <x-tabbar>
+          <x-tabbar-tab target-selector="x-deck x-card:first-child">one</x-tabbar-tab>
+          <x-tabbar-tab target-selector="x-deck x-card:nth-child(2)">two</x-tabbar-tab>
+        </x-tabbar>
+      </footer>
+    </x-layout>
+  </body>
+</html>
