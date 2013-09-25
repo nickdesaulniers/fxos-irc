@@ -3,12 +3,20 @@ html, body {
   margin: 0;
   padding: 0;
 }
-button {
+button#connect {
   width: 75px;
   height: 75px;
 }
-input[type=text] {
+input#host, input#username {
   display: block;
+  height: 50px;
+  font-size: large;
+}
+button#connect {
+  float: right;
+}
+div#hostlist {
+  clear: both;
 }
 div.chat {
   background-color: white;
