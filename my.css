@@ -11,8 +11,10 @@ input[type=text] {
   display: block;
 }
 div.chat {
+  background-color: white;
   overflow-y: auto;
   height: 95%;
+  border-radius: 5px 5px 0 0;
 }
 input.send {
   min-height: 5%;
@@ -21,15 +23,12 @@ input.send {
   width: 100%;
 }
 x-deck {
-  background: orange;
+  background-color: #E50001;
 }
 x-card {
   padding: 10px;
 }
 x-card:first-child {
-  background: pink;
-}
-x-card:nth-child(2) {
-  background: lightblue;
+  background-color: #FF5818;
 }
 

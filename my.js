@@ -49,6 +49,8 @@ function Tab (opts) {
   this.index = index++;
   this.card = document.createElement("x-card");
   this.card.id = "__" + opts.chan.substr(1);
+  // http://www.paulirish.com/2009/random-hex-color-code-snippets/#comment-931662323
+  this.card.style.backgroundColor = "#" + (Math.random().toString(16) + '000000').slice(2, 8);
   this.tab = document.createElement("x-tabbar-tab");
 
   this.tab.setAttribute("target-selector", "x-deck x-card#" + this.card.id);
@@ -59,6 +61,7 @@ function Tab (opts) {
 
   this.input = document.createElement("input");
   this.input.className = "send";
+  this.input.placeholder = "Type here then press <Enter> to send";
   this.input.onkeyup = this.send.bind(this);
 
   this.card.appendChild(this.log)
