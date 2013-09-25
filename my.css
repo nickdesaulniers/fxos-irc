@@ -21,14 +21,18 @@ input.send {
   max-height: 100px;
   font-size: large;
   width: 100%;
+  border: 0;
 }
 x-deck {
   background-color: #E50001;
 }
 x-card {
-  padding: 10px;
+  padding: 5px;
 }
 x-card:first-child {
   background-color: #FF5818;
 }
 
+div.chat p {
+  margin: 0;
+}
