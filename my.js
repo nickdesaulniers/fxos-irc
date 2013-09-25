@@ -28,14 +28,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       client.connect(function () {
         var chans = channels.split(/\s*,\s*/);
-        console.log("connected", chans);
 
         chans.forEach(function (chan) {
-          client.join(chan);
-          new Tab({
-            chan: chan,
-            client: client,
-            nick: username
+          client.join(chan, function () {
+            new Tab({
+              chan: chan,
+              client: client,
+              nick: username,
+            });
           });
         });
       });
@@ -48,9 +48,10 @@ var index = 2;
 function Tab (opts) {
   this.index = index++;
   this.card = document.createElement("x-card");
+  this.card.id = "__" + opts.chan.substr(1);
   this.tab = document.createElement("x-tabbar-tab");
 
-  this.tab.setAttribute("target-selector", "x-deck x-card:nth-child("+this.index+")");
+  this.tab.setAttribute("target-selector", "x-deck x-card#" + this.card.id);
   this.tab.textContent = opts.chan;
 
   this.log = document.createElement("div");
@@ -70,7 +71,7 @@ function Tab (opts) {
   this.chan = opts.chan;
   this.nick = opts.nick;
 
-  this.client.addListener("message"+opts.chan, this.onMessage.bind(this));
+  this.client.addListener("message" + opts.chan, this.onMessage.bind(this));
 
   this.addText(this.nick, "Joined " + opts.chan);
 }
