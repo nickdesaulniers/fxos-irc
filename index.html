@@ -15,21 +15,19 @@
         <x-appbar heading="Servers"></x-appbar>
       </header>
       <section>
-      <x-deck transition-type="flipX">
+      <x-deck transition-type="flipX" id="container">
         <x-card>
-          <input type="text" placeholder="host" id="host"/>
-          <input type="text" placeholder="username" id="username"/>
+          <input type="text" placeholder="host" id="host" value="irc.mozilla.org"/>
+          <input type="text" placeholder="username" id="username" value="test"/>
+          <input type="text" placeholder="channels" id="channels" value="#testclient"/>
           <button id="connect">Connect</button>
-        </x-card>
-        <x-card>
-          <p>page2</p>
         </x-card>
       </x-deck>
       </section>
       <footer>
-        <x-tabbar>
-          <x-tabbar-tab target-selector="x-deck x-card:first-child">one</x-tabbar-tab>
-          <x-tabbar-tab target-selector="x-deck x-card:nth-child(2)">two</x-tabbar-tab>
+        <x-tabbar id="tabbar">
+          <x-tabbar-tab target-selector="x-deck x-card:first-child">Setup</x-tabbar-tab>
+          
         </x-tabbar>
       </footer>
     </x-layout>
