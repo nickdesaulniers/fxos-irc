@@ -1,16 +1,16 @@
 var $container;
 var $tabbar;
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   var $ = document.getElementById.bind(document);
 
   $container = $("container");
   $tabbar = $("tabbar");
-  
-  $('connect').addEventListener('click', function () {
-    var hostEle = $('host');
-    var userEle = $('username');
-    var channelsEle = $('channels');
+
+  $("connect").addEventListener("click", function () {
+    var hostEle = $("host");
+    var userEle = $("username");
+    var channelsEle = $("channels");
 
     var host = hostEle.value;
     var username = userEle.value;
@@ -27,9 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       client.connect(function () {
-        
         var chans = channels.split(/\s*,\s*/);
-        console.log('connected', chans);
+        console.log("connected", chans);
 
         chans.forEach(function (chan) {
           client.join(chan);
@@ -77,15 +76,15 @@ function Tab (opts) {
   this.chan = opts.chan;
   this.nick = opts.nick;
 
-  this.client.addListener('message'+opts.chan, this.onMessage.bind(this));
+  this.client.addListener("message"+opts.chan, this.onMessage.bind(this));
 }
 
 function timestamp () {
   var d = new Date;
   return [
-    ('0' + d.getHours()).slice(-2),
+    ("0" + d.getHours()).slice(-2),
     ":",
-    ('0' + d.getMinutes()).slice(-2)
+    ("0" + d.getMinutes()).slice(-2)
   ].join("");
 }
 
@@ -104,6 +103,3 @@ Tab.prototype = {
   }
 }
 
-/*var client = new Client('irc.mozilla.org', 'fxos', {
-  channels: ['#pe'],
-});*/
