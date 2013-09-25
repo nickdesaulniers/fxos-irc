@@ -10,15 +10,15 @@ document.addEventListener("DOMContentLoaded", function () {
   $("connect").addEventListener("click", function () {
     var hostEle = $("host");
     var userEle = $("username");
-    var channelsEle = $("channels");
+    //var channelsEle = $("channels");
 
     var host = hostEle.value;
     var username = userEle.value;
-    var channels = channelsEle.value;
+    //var channels = channelsEle.value;
 
     hostEle.value = null;
     userEle.value = null;
-    channelsEle.value = null;
+    //channelsEle.value = null;
 
     if (host && username) {
       var client = new Client(host, username, {
@@ -27,9 +27,24 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       client.connect(function () {
-        var chans = channels.split(/\s*,\s*/);
+        console.log('client connected');
+        var div = document.createElement("div");
+        div.id = "__" + host;
+        var disconnect = document.createElement("button");
+        disconnect.textContent = "-";
+        disconnect.onclick = function () {
+          client.disconnect(function () {
+            console.log('client disconnected');
+            var listing = $("__" + host);
+            listing.parentElement.removeChild(listing);
+          });
+        };
+        div.textContent = host;
+        div.appendChild(disconnect);
+        $("hostlist").appendChild(div);
+        //var chans = channels.split(/\s*,\s*/);
 
-        chans.forEach(function (chan) {
+        /*chans.forEach(function (chan) {
           client.join(chan, function () {
             new Tab({
               chan: chan,
@@ -37,16 +52,13 @@ document.addEventListener("DOMContentLoaded", function () {
               nick: username,
             });
           });
-        });
+        });*/
       });
     }
   });
 });
 
-var index = 2;
-
 function Tab (opts) {
-  this.index = index++;
   this.card = document.createElement("x-card");
   this.card.id = "__" + opts.chan.substr(1);
   // http://www.paulirish.com/2009/random-hex-color-code-snippets/#comment-931662323
