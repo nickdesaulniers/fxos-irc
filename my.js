@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-var tabs = [];
 var index = 1; //start at 2
 
 function Tab (opts) {
@@ -80,12 +79,7 @@ function Tab (opts) {
 }
 
 function timestamp () {
-  var d = new Date;
-  return [
-    ("0" + d.getHours()).slice(-2),
-    ":",
-    ("0" + d.getMinutes()).slice(-2)
-  ].join("");
+  return (new Date).toTimeString().substr(0, 5);
 }
 
 Tab.prototype = {
