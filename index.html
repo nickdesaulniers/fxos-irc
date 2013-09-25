@@ -11,9 +11,6 @@
     <script src="node-irc/lib/irc.js"></script>
     <script src="my.js"></script>
     <x-layout>
-      <header>
-        <x-appbar heading="Servers"></x-appbar>
-      </header>
       <section>
       <x-deck transition-type="flipX" id="container">
         <x-card>
@@ -27,7 +24,6 @@
       <footer>
         <x-tabbar id="tabbar">
           <x-tabbar-tab target-selector="x-deck x-card:first-child">Setup</x-tabbar-tab>
-          
         </x-tabbar>
       </footer>
     </x-layout>

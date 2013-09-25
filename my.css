@@ -10,6 +10,16 @@ button {
 input[type=text] {
   display: block;
 }
+div.chat {
+  overflow-y: auto;
+  height: 95%;
+}
+input.send {
+  min-height: 5%;
+  max-height: 100px;
+  font-size: large;
+  width: 100%;
+}
 x-deck {
   background: orange;
 }

@@ -43,30 +43,25 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-var index = 1; //start at 2
+var index = 2;
 
 function Tab (opts) {
-  this.index = ++index;
+  this.index = index++;
   this.card = document.createElement("x-card");
   this.tab = document.createElement("x-tabbar-tab");
 
   this.tab.setAttribute("target-selector", "x-deck x-card:nth-child("+this.index+")");
   this.tab.textContent = opts.chan;
 
-  this.log = document.createElement("pre");
-  this.log.textContent = "Joined " + opts.chan;
-  this.log.className = "log";
+  this.log = document.createElement("div");
+  this.log.className = "chat";
 
   this.input = document.createElement("input");
-  this.input.className = "input";
-
-  this.submit = document.createElement("button");
-  this.submit.textContent = "Send";
-  this.submit.onclick = this.send.bind(this);
+  this.input.className = "send";
+  this.input.onkeyup = this.send.bind(this);
 
   this.card.appendChild(this.log)
   this.card.appendChild(this.input)
-  this.card.appendChild(this.submit)
 
   $container.appendChild(this.card);
   $tabbar.appendChild(this.tab);
@@ -76,24 +71,30 @@ function Tab (opts) {
   this.nick = opts.nick;
 
   this.client.addListener("message"+opts.chan, this.onMessage.bind(this));
-}
 
-function timestamp () {
-  return (new Date).toTimeString().substr(0, 5);
+  this.addText(this.nick, "Joined " + opts.chan);
 }
 
 Tab.prototype = {
   onMessage: function (from, data) {
-    console.log(JSON.stringify(data))
-    this.log.textContent += "\n " + timestamp() + " < " + from + " > " + data[1];
+    this.addText(from, data[1]);
   },
 
-  send: function () {
+  send: function (e) {
     var say = this.input.value;
-    this.input.value = "";
+    if (e.keyCode === 13 && say) {
+      this.input.value = null;
+      this.client.say(this.chan, say);
+      this.addText(this.nick, say);
+    }
+  },
 
-    this.client.say(this.chan, say);
-    this.log.textContent += "\n " + timestamp() + " < " + this.nick + " > " + say;
-  }
+  addText: function (user, text) {
+    var timestamp =  (new Date).toTimeString().substr(0, 5);
+    var p = document.createElement("p");
+    p.textContent = timestamp + " < " + user + " > " + text;
+    this.log.appendChild(p);
+    this.log.scrollTop = this.log.scrollHeight;
+  },
 }
 
