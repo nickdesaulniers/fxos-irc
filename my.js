@@ -24,6 +24,7 @@ var $container;
 var $tabbar;
 
 var clients = {};
+var privMSG = {};
 
 document.addEventListener("DOMContentLoaded", function () {
   var $ = document.getElementById.bind(document);
@@ -111,6 +112,18 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         });
       });
+
+      client.addListener('pm', function (from, text, message) {
+        if (!(from in privMSG)) {
+          privMSG[from] = new Tab({
+            chan: from,
+            client: client,
+            nick: username,
+            host: host,
+          });
+        }
+        privMSG[from].addText(from, text);
+      });
     }
   });
 });
@@ -123,14 +136,15 @@ var FlatUIColors = [
   "#34495e",
   "#f1c40f",
   "#e67e22",
-  "#c0392b"
+  "#c0392b",
 ];
 
 function Tab (opts) {
+  opts.host = opts.host.replace(/\./g, "-");
+
   this.card = document.createElement("x-card");
   this.card.id = "__" + opts.chan.substr(1);
-  this.card.className = opts.host.replace(/\./g, "-");
-  //console.log("TAB HOST", opts.host.replace(/\./g, "-"))
+  this.card.className = opts.host;
 
   var color = FlatUIColors[FlatUIColors.length * Math.random() | 0];
   this.card.style.backgroundColor = color;
@@ -139,7 +153,7 @@ function Tab (opts) {
   this.tab.setAttribute("target-selector", "x-deck x-card#" + this.card.id);
   this.tab.textContent = opts.chan;
   this.tab.style.backgroundColor = color;
-  this.tab.className = opts.host.replace(/\./g, "-");
+  this.tab.className = opts.host;
 
   this.log = document.createElement("div");
   this.log.className = "chat";
@@ -149,8 +163,8 @@ function Tab (opts) {
   this.input.placeholder = "Type here then press <Enter> to send";
   this.input.onkeyup = this.send.bind(this);
 
-  this.card.appendChild(this.log)
-  this.card.appendChild(this.input)
+  this.card.appendChild(this.log);
+  this.card.appendChild(this.input);
 
   $container.appendChild(this.card);
   $tabbar.appendChild(this.tab);
@@ -166,7 +180,7 @@ function Tab (opts) {
 
 Tab.prototype = {
   onMessage: function (from, data) {
-    this.addText(from, data[1]);
+    this.addText(from, data);
   },
 
   send: function (e) {
