@@ -97,6 +97,9 @@ document.addEventListener("DOMContentLoaded", function () {
         var chans = channels.split(/\s*,\s*/);
 
         chans.forEach(function (chan) {
+          if (chan[0] !== "#") {
+            chan = "#" + chan;
+          }
           client.join(chan, function () {
             console.log("Joined", chan)
             new Tab({
