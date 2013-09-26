@@ -1,7 +1,8 @@
 {
   "name": "IRC",
   "developer": {
-    "name": "Nick & Louis"
+    "name": "Nick & Louis",
+    "url": "https://github.com/nickdesaulniers/fxos-irc/graphs/contributors"
   },
   "description": "An IRC client",
   "launch_path": "/index.html",
@@ -15,3 +16,4 @@
   },
   "type": "privileged"
 }
+
