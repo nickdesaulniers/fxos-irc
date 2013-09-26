@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
   $tabbar = $("tabbar");
 
   if (localStorage.nick) {
-    $("username").value = localStorage.nick
+    $("username").value = localStorage.nick;
   }
 
   $("connect").addEventListener("click", function () {
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
       client.connect(function () {
         console.log('client connected');
         $("loading").style.display = "none";
-        
+
         var div = document.createElement("div");
         div.id = "__" + host;
 
@@ -179,8 +179,8 @@ Tab.prototype = {
     var timestamp =  (new Date).toTimeString().substr(0, 5);
     var p = document.createElement("p");
     p.textContent = timestamp + " < " + user + " > " + text;
-    
-    if (user === this.nick) { 
+
+    if (user === this.nick) {
       p.classList.add("mine");
     }
 
