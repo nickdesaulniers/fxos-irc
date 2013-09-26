@@ -9,6 +9,10 @@ document.addEventListener("DOMContentLoaded", function () {
   $container = $("container");
   $tabbar = $("tabbar");
 
+  if (localStorage.nick) {
+    $("username").value = localStorage.nick
+  }
+
   $("connect").addEventListener("click", function () {
     var hostEle = $("host");
     var userEle = $("username");
@@ -17,6 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var host = hostEle.value;
     var username = userEle.value;
     var channels = channelsEle.value;
+
+    localStorage.nick = username;
 
     hostEle.value = null;
     channelsEle.value = null;
