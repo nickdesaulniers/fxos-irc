@@ -12,16 +12,20 @@
     <script src="my.js"></script>
     <x-layout>
       <section>
-      <x-deck transition-type="flipX" id="container">
+      <x-deck transition-type="scrollLeft" id="container">
         <x-card>
-          <h3>New Server</h3>
-          <div>
-            <button id="connect">Connect</button>
+          <h1>Firesea</h1>
+          <p class="subtitle">You can't say Firesea without IRC</p>
+          <div class="connect">
             <input type="text" placeholder="host" id="host" value="irc.mozilla.org"/>
             <input type="text" placeholder="username" id="username" value="test"/>
+            <input type="text" placeholder="channels" id="channels" value="#testclient"/>
           </div>
+
           <div id="hostlist"></div>
-          <!--<input type="text" placeholder="channels" id="channels" value="#testclient"/>-->
+          
+          <button id="connect" class="moz-button">Connect</button>
+          <div id="loading"><img src="ajax-loader.gif" /></div>
         </x-card>
       </x-deck>
       </section>
