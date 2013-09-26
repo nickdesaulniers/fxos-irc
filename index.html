@@ -15,17 +15,15 @@
       <x-deck transition-type="scrollLeft" id="container">
         <x-card>
           <h1>Firesea</h1>
-          <p class="subtitle">You can't say Firesea without IRC</p>
           <div class="connect">
             <input type="text" placeholder="host" id="host" value="irc.mozilla.org"/>
             <input type="text" placeholder="username" id="username" value="test"/>
             <input type="text" placeholder="channels" id="channels" value="#testclient"/>
           </div>
-
           <div id="hostlist"></div>
-          
           <button id="connect" class="moz-button">Connect</button>
           <div id="loading"><img src="ajax-loader.gif" /></div>
+          <p class="subtitle">You can't say Firesea without IRC</p>
         </x-card>
       </x-deck>
       </section>
