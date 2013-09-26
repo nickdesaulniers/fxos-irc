@@ -130,7 +130,7 @@ function Tab (opts) {
   this.card = document.createElement("x-card");
   this.card.id = "__" + opts.chan.substr(1);
   this.card.className = opts.host.replace(/\./g, "-");
-  console.log("TAB HOST", opts.host.replace(/\./g, "-"))
+  //console.log("TAB HOST", opts.host.replace(/\./g, "-"))
 
   var color = FlatUIColors[FlatUIColors.length * Math.random() | 0];
   this.card.style.backgroundColor = color;
