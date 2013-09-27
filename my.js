@@ -26,6 +26,24 @@ var $tabbar;
 var clients = {};
 var privMSG = {};
 
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;'
+};
+
+function escapeHtml (string) {
+    if (string === null || string === undefined) {
+        return string;
+    }
+
+    return String(string).replace(/[&<>"']/g, function (s) {
+        return entityMap[s];
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   var $ = document.getElementById.bind(document);
 
@@ -119,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
             chan: from,
             client: client,
             nick: username,
-            host: host,
+            host: host
           });
         }
         privMSG[from].addText(from, text);
@@ -140,11 +158,11 @@ var FlatUIColors = [
 ];
 
 function Tab (opts) {
-  opts.host = opts.host.replace(/\./g, "-");
+  var host = opts.host.replace(/\./g, "-");
 
   this.card = document.createElement("x-card");
   this.card.id = "__" + opts.chan.substr(1);
-  this.card.className = opts.host;
+  this.card.className = host;
 
   var color = FlatUIColors[FlatUIColors.length * Math.random() | 0];
   this.card.style.backgroundColor = color;
@@ -153,10 +171,11 @@ function Tab (opts) {
   this.tab.setAttribute("target-selector", "x-deck x-card#" + this.card.id);
   this.tab.textContent = opts.chan;
   this.tab.style.backgroundColor = color;
-  this.tab.className = opts.host;
+  this.tab.className = host;
 
   this.log = document.createElement("div");
   this.log.className = "chat";
+  this.log.onclick = this.openPrivate.bind(this);
 
   this.input = document.createElement("input");
   this.input.className = "send";
@@ -172,6 +191,7 @@ function Tab (opts) {
   this.client = opts.client;
   this.chan = opts.chan;
   this.nick = opts.nick;
+  this.host = opts.host;
 
   this.client.addListener("message" + opts.chan, this.onMessage.bind(this));
 
@@ -195,7 +215,12 @@ Tab.prototype = {
   addText: function (user, text, type) {
     var timestamp =  (new Date).toTimeString().substr(0, 5);
     var p = document.createElement("p");
-    p.textContent = timestamp + " < " + user + " > " + text;
+    
+    var escapeText = escapeHtml(text);
+    escapeText = escapeText.replace(/(http(s)?:\/\/[^ '"\n<>\]\[\*!@\(\)]+)/g, "<a href='$1' target='_blank'>$1</a>");
+
+    var html = timestamp + " &lt; <a href='#"+user+"'>" + user + "</a> &gt; " + escapeText;
+    p.innerHTML = html;
 
     if (user === this.nick) {
       p.classList.add("mine");
@@ -208,5 +233,20 @@ Tab.prototype = {
     this.log.appendChild(p);
     this.log.scrollTop = this.log.scrollHeight;
   },
+
+  openPrivate: function (e) {
+    console.log("CLICKED")
+    if (e.target.tagName === "A") {
+      var name = e.target.textContent;
+      
+      privMSG[name] = new Tab({
+        chan: name,
+        client: this.client,
+        nick: this.nick,
+        host: this.host
+      });
+    }
+  }
 }
+
 
