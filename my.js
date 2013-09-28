@@ -27,21 +27,21 @@ var clients = {};
 var privMSG = {};
 
 var entityMap = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': '&quot;',
-    "'": '&#39;'
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': '&quot;',
+  "'": '&#39;'
 };
 
 function escapeHtml (string) {
-    if (string === null || string === undefined) {
-        return string;
-    }
+  if (string === null || string === undefined) {
+    return string;
+  }
 
-    return String(string).replace(/[&<>"']/g, function (s) {
-        return entityMap[s];
-    });
+  return String(string).replace(/[&<>"']/g, function (s) {
+    return entityMap[s];
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -215,7 +215,7 @@ Tab.prototype = {
   addText: function (user, text, type) {
     var timestamp =  (new Date).toTimeString().substr(0, 5);
     var p = document.createElement("p");
-    
+
     var escapeText = escapeHtml(text);
     escapeText = escapeText.replace(/(http(s)?:\/\/[^ '"\n<>\]\[\*!@\(\)]+)/g, "<a href='$1' target='_blank'>$1</a>");
 
@@ -238,7 +238,7 @@ Tab.prototype = {
     console.log("CLICKED")
     if (e.target.tagName === "A") {
       var name = e.target.textContent;
-      
+
       privMSG[name] = new Tab({
         chan: name,
         client: this.client,
@@ -248,5 +248,4 @@ Tab.prototype = {
     }
   }
 }
-
 
