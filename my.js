@@ -74,6 +74,9 @@ document.addEventListener("DOMContentLoaded", function () {
         clients[host] = new Client(host, username, {
           stripColors: true,
           autoConnect: false,
+          //secure: true,
+          //port: 6697,
+          //debug: true,
         });
       }
 
