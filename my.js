@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         disconnect.onclick = function () {
           client.disconnect(function () {
-            console.log('client disconnected');
+            console.log("client disconnected");
             var listing = $("__" + host);
             delete clients[host];
             listing.parentElement.removeChild(listing);
@@ -102,6 +102,11 @@ document.addEventListener("DOMContentLoaded", function () {
             for (var i = 0; i < nodes.length; ++i) {
               var el = nodes[i];
               el.parentNode.removeChild(el)
+            }
+            for (var nick in privMSG) {
+              if (host === privMSG[nick].host) {
+                delete privMSG[nick];
+              }
             }
           });
         };
@@ -235,16 +240,17 @@ Tab.prototype = {
   },
 
   openPrivate: function (e) {
-    console.log("CLICKED")
-    if (e.target.tagName === "A") {
+    if (e.target.tagName === "A" && !e.target.target) {
       var name = e.target.textContent;
 
-      privMSG[name] = new Tab({
-        chan: name,
-        client: this.client,
-        nick: this.nick,
-        host: this.host
-      });
+      if (!privMSG[name] && name !== this.nick) {
+        privMSG[name] = new Tab({
+          chan: name,
+          client: this.client,
+          nick: this.nick,
+          host: this.host
+        });
+      }
     }
   }
 }
