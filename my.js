@@ -50,12 +50,13 @@ document.addEventListener("DOMContentLoaded", function () {
   $container = $("container");
   $tabbar = $("tabbar");
   $setup = $("setup");
+  $advanced = $("advanced-link");
 
-  $("advanced-link").onclick = function () {
-    if ($("advanced").style.display === "block")
-      $("advanced").style.display = "none";
+  $advanced.onclick = function () {
+    if ($advanced.style.display === "block")
+      $advanced.style.display = "none";
     else
-      $("advanced").style.display = "block";
+      $advanced.style.display = "block";
   }
 
   if (localStorage.nick) {
@@ -72,8 +73,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var channels = channelsEle.value;
     var port = $("port").value;
     var secure = $("secure").checked;
-
-    console.log(secure)
 
     localStorage.nick = username;
 
