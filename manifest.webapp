@@ -1,5 +1,6 @@
 {
   "name": "Firesea IRC",
+  "version": "1.0",
   "developer": {
     "name": "Mozilla Partner Engineering",
     "url": "https://github.com/nickdesaulniers/fxos-irc/graphs/contributors"
