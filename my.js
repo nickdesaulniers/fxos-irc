@@ -130,9 +130,11 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         $("hostlist").appendChild(div);
 
-        var chans = channels.split(/\s*,\s*/);
-
-        chans.forEach(function (chan) {
+        channels.split(/\s*,\s*/).forEach(function (chan) {
+          chan = chan.trim();
+          if (chan.length === 0) {
+            return;
+          }
           if (chan[0] !== "#") {
             chan = "#" + chan;
           }
