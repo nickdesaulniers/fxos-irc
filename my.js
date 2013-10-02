@@ -7,6 +7,7 @@
  * Copyright (c) 2010, Martyn Smith
  * Copyright (c) 2013, Yusuke Kamiyamane
  * Copyright (c) 2013, Mark James
+ * Copyright (c) 2013, Mozilla Corporation
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
