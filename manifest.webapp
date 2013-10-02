@@ -1,7 +1,7 @@
 {
-  "name": "IRC",
+  "name": "Firesea IRC",
   "developer": {
-    "name": "Nick & Louis",
+    "name": "Mozilla Partner Engineering",
     "url": "https://github.com/nickdesaulniers/fxos-irc/graphs/contributors"
   },
   "description": "An IRC client",
