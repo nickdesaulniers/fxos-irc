@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
 
-      client.addListener('pm', function (from, text, message) {
+      client.addListener("pm", function (from, text, message) {
         if (!(from in privMSG)) {
           privMSG[from] = new Tab({
             chan: from,
@@ -235,22 +235,23 @@ Tab.prototype = {
   },
 
   addText: function (user, text, type) {
-    var timestamp =  (new Date).toTimeString().substr(0, 5);
+    var timestamp = (new Date).toTimeString().substr(0, 5);
     var p = document.createElement("p");
+    var html = timestamp + " &lt; ";
 
     var escapeText = escapeHtml(text);
     escapeText = escapeText.replace(/(http(s)?:\/\/[^ '"\n<>\]\[\*!@\(\)]+)/g, "<a href='$1' target='_blank'>$1</a>");
 
-    var html = timestamp + " &lt; <a href='#"+user+"'>" + user + "</a> &gt; " + escapeText;
-    p.innerHTML = html;
-
-    if (user === this.nick) {
-      p.classList.add("mine");
-    }
-
     if (type) {
-      p.classList.add(type)
+      p.classList.add(type);
+      html += escapeText;
+    } else if (user === this.nick) {
+      p.classList.add("mine");
+      html += user + " &gt; " + escapeText;
+    } else {
+      html += "<a href='#" + user + "'>" + user + "</a> &gt; " + escapeText;
     }
+    p.innerHTML = html;
 
     this.log.appendChild(p);
     this.log.scrollTop = this.log.scrollHeight;
