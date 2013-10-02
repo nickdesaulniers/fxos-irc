@@ -13,13 +13,22 @@
     <x-layout>
       <section>
       <x-deck transition-type="scrollLeft" id="container">
-        <x-card>
+        <x-card id="setup">
           <h1>Firesea</h1>
           <div class="connect">
             <input type="text" placeholder="host" id="host" value="irc.mozilla.org"/>
             <input type="text" placeholder="username" id="username" value="test"/>
             <input type="text" placeholder="channels" id="channels" value="#testclient"/>
+
+            <a href="#advanced" id="advanced-link">Advanced Settings</a>
+            <div id="advanced">
+              <label><input type="checkbox" id="secure"/> Secure</label>
+              <input type="text" placeholder="port" id="port" />
+            </div>
           </div>
+
+         
+
           <button id="connect" class="moz-button">Connect</button>
           <p class="subtitle">You can't say Firesea without IRC</p>
           <div id="hostlist"></div>

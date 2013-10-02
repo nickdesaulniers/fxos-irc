@@ -49,6 +49,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   $container = $("container");
   $tabbar = $("tabbar");
+  $setup = $("setup");
+
+  $("advanced-link").onclick = function () {
+    if ($("advanced").style.display === "block")
+      $("advanced").style.display = "none";
+    else
+      $("advanced").style.display = "block";
+  }
 
   if (localStorage.nick) {
     $("username").value = localStorage.nick;
@@ -62,6 +70,10 @@ document.addEventListener("DOMContentLoaded", function () {
     var host = hostEle.value;
     var username = userEle.value;
     var channels = channelsEle.value;
+    var port = $("port").value;
+    var secure = $("secure").checked;
+
+    console.log(secure)
 
     localStorage.nick = username;
 
@@ -74,8 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
         clients[host] = new Client(host, username, {
           stripColors: true,
           autoConnect: false,
-          //secure: true,
-          //port: 6697,
+          secure: secure,
+          port: port || (secure ? 6697 : 6667)
           //debug: true,
         });
       }
@@ -190,8 +202,15 @@ function Tab (opts) {
   this.input.placeholder = "Type here then press <Enter> to send";
   this.input.onkeyup = this.send.bind(this);
 
+  this.part = document.createElement("a");
+  this.part.textContent = "close";
+  this.part.className = "part";
+  this.part.onclick = this.doPart.bind(this);
+  this.part.style.backgroundColor = color;
+
   this.card.appendChild(this.log);
   this.card.appendChild(this.input);
+  this.card.appendChild(this.part);
 
   $container.appendChild(this.card);
   $tabbar.appendChild(this.tab);
@@ -255,6 +274,13 @@ Tab.prototype = {
         });
       }
     }
+  },
+
+  doPart: function () {
+    this.client.part(this.chan);
+    this.card.parentNode.removeChild(this.card);
+    this.tab.parentNode.removeChild(this.tab);
+    $setup.setAttribute("selected");
   }
 }
 

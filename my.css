@@ -59,7 +59,7 @@ button#connect {
   transition: all linear .25s;
 }
 
-.connect input {
+.connect input[type=text] {
   height: 30px;
   font-size: large;
   width: 100%;
@@ -67,6 +67,25 @@ button#connect {
   padding: 0;
   border: 0;
   display: block;
+}
+
+.connect label {
+  margin: 5px 0; 
+}
+
+#advanced {
+  margin: 10px 0;
+  display: none;
+}
+
+a.part {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  padding: 5px;
+  border-bottom-left-radius: 5px;
+  color: white;
 }
 
 div.chat {
