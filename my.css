@@ -25,10 +25,14 @@ html, body {
   font-family: 'Open Sans';
 }
 
-button#connect {
+#connect {
   width: 100%;
   height: 35px;
   border: 0;
+}
+
+#advanced-link {
+  margin-top: 5px;
 }
 
 .moz-button {
@@ -46,7 +50,6 @@ button#connect {
   padding: 5px 10px;
   line-height: 1.1;
   text-decoration: none;
-  min-width: 80px;
   border: 0;
   text-shadow: 0 1px 0 rgba(0,0,0,0.25);
   transition: all linear .25s;
@@ -59,7 +62,7 @@ button#connect {
   transition: all linear .25s;
 }
 
-.connect input[type=text] {
+.connect input[type=text], #advanced input[type=text] {
   height: 30px;
   font-size: large;
   width: 100%;
@@ -70,7 +73,7 @@ button#connect {
 }
 
 .connect label {
-  margin: 5px 0; 
+  margin: 5px 0;
 }
 
 #advanced {

@@ -19,16 +19,13 @@
             <input type="text" placeholder="host" id="host" value="irc.mozilla.org"/>
             <input type="text" placeholder="username" id="username" value="test"/>
             <input type="text" placeholder="channels" id="channels" value="#testclient"/>
-
-            <a href="#advanced" id="advanced-link">Advanced Settings</a>
-            <div id="advanced">
-              <label><input type="checkbox" id="secure"/> Secure</label>
-              <input type="text" placeholder="port" id="port" />
-            </div>
           </div>
-          
           <button id="connect" class="moz-button">Connect</button>
-          <p class="subtitle">You can't say Firesea without IRC</p>
+          <img src="setting.png" id="advanced-link" class="moz-button"/>
+          <div id="advanced">
+            <label><input type="checkbox" id="secure"/>Secure</label>
+            <input type="text" placeholder="port" id="port" />
+          </div>
           <div id="hostlist"></div>
           <div id="loading"><img src="ajax-loader.gif" /></div>
         </x-card>

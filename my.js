@@ -5,6 +5,7 @@
  * permission notice:
  *
  * Copyright (c) 2010, Martyn Smith
+ * Copyright (c) 2013, Yusuke Kamiyamane
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +21,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var $container;
-var $tabbar;
-
 var clients = {};
 var privMSG = {};
 
@@ -33,6 +31,8 @@ var entityMap = {
   '"': '&quot;',
   "'": '&#39;'
 };
+
+var $ = document.getElementById.bind(document);
 
 function escapeHtml (string) {
   if (string === null || string === undefined) {
@@ -45,18 +45,14 @@ function escapeHtml (string) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  var $ = document.getElementById.bind(document);
+  var $advanced = $("advanced");
 
-  $container = $("container");
-  $tabbar = $("tabbar");
-  $setup = $("setup");
-  $advanced = $("advanced-link");
-
-  $advanced.onclick = function () {
-    if ($advanced.style.display === "block")
+  $("advanced-link").onclick = function () {
+    if ($advanced.style.display === "block") {
       $advanced.style.display = "none";
-    else
+    } else {
       $advanced.style.display = "block";
+    }
   }
 
   if (localStorage.nick) {
@@ -139,12 +135,12 @@ document.addEventListener("DOMContentLoaded", function () {
             chan = "#" + chan;
           }
           client.join(chan, function () {
-            console.log("Joined", chan)
+            console.log("Joined ", chan);
             new Tab({
               chan: chan,
               client: client,
               nick: username,
-              host: host
+              host: host,
             });
           });
         });
@@ -156,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
             chan: from,
             client: client,
             nick: username,
-            host: host
+            host: host,
           });
         }
         privMSG[from].addText(from, text);
@@ -211,8 +207,8 @@ function Tab (opts) {
   this.card.appendChild(this.input);
   this.card.appendChild(this.part);
 
-  $container.appendChild(this.card);
-  $tabbar.appendChild(this.tab);
+  $("container").appendChild(this.card);
+  $("tabbar").appendChild(this.tab);
 
   this.client = opts.client;
   this.chan = opts.chan;
@@ -276,10 +272,14 @@ Tab.prototype = {
   },
 
   doPart: function () {
-    this.client.part(this.chan);
+    if (this.chan[0] === "#") {
+      this.client.part(this.chan);
+    } else {
+      delete privMSG[this.chan];
+    }
     this.card.parentNode.removeChild(this.card);
     this.tab.parentNode.removeChild(this.tab);
-    $setup.setAttribute("selected");
+    $("setup").setAttribute("selected");
   }
 }
 
