@@ -6,6 +6,7 @@
  *
  * Copyright (c) 2010, Martyn Smith
  * Copyright (c) 2013, Yusuke Kamiyamane
+ * Copyright (c) 2013, Mark James
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,8 +98,9 @@ document.addEventListener("DOMContentLoaded", function () {
         var div = document.createElement("div");
         div.id = "__" + host;
 
-        var disconnect = document.createElement("button");
-        disconnect.textContent = "-";
+        var disconnect = document.createElement("img");
+        disconnect.src = "disconnect.png";
+        disconnect.className = "moz-button";
 
         disconnect.onclick = function () {
           client.disconnect(function () {
@@ -121,8 +123,8 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         };
 
-        div.textContent = host;
         div.appendChild(disconnect);
+        div.appendChild(document.createTextNode(host));
         div.onclick = function () {
           hostEle.value = host;
         };
