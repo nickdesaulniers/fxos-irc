@@ -56,6 +56,15 @@ document.addEventListener("DOMContentLoaded", function () {
       $advanced.style.display = "block";
     }
   }
+  $("secure").onchange = function () {
+    var port = $("port");
+    if (port.value) {
+      return;
+    }
+    var secure = this.checked;
+    var hint = port.placeholder.replace(/\d+/, secure ? '6697' : '6667');
+    port.placeholder = hint;
+  }
 
   if (localStorage.nick) {
     $("username").value = localStorage.nick;
