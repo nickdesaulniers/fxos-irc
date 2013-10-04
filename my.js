@@ -56,12 +56,32 @@ document.addEventListener("DOMContentLoaded", function () {
       $advanced.style.display = "block";
     }
   }
+  $("secure").onchange = function () {
+    var port = $("port");
+    if (port.value) {
+      return;
+    }
+    var secure = this.checked;
+    var hint = port.placeholder.replace(/\d+/, secure ? '6697' : '6667');
+    port.placeholder = hint;
+  }
 
+  // TODO: Add asyncStorage.js
+  if (localStorage.presets) {
+    var presets = JSON.parse(localStorage.presets);
+    $("host").value = presets.host;
+    $("username").value = presets.username;
+    $("channels").value = presets.channels;
+    $("secure").checked = presets.secure;
+    $("port").value = presets.port;
+  }
   if (localStorage.nick) {
-    $("username").value = localStorage.nick;
+
   }
 
   $("connect").addEventListener("click", function () {
+    var presets = {};
+
     var hostEle = $("host");
     var userEle = $("username");
     var channelsEle = $("channels");
@@ -72,97 +92,112 @@ document.addEventListener("DOMContentLoaded", function () {
     var port = $("port").value;
     var secure = $("secure").checked;
 
-    localStorage.nick = username;
+    if (!host) {
+      alert('Please provide a host');
+      hostEle.focus();
+      return;
+    }
+    if (!username) {
+      alert('Please provide a username');
+      userEle.focus();
+      return;
+    }
+
+    localStorage.presets = JSON.stringify({
+      host: host,
+      username: username,
+      channels: channels,
+      port: port,
+      secure: secure
+    });
 
     hostEle.value = null;
     channelsEle.value = null;
 
-    if (host && username) {
-      // cache clients by host
-      if (!clients[host]) {
-        clients[host] = new Client(host, username, {
-          stripColors: true,
-          autoConnect: false,
-          secure: secure,
-          port: port || (secure ? 6697 : 6667)
-          //debug: true,
-        });
-      }
-
-      var client = clients[host];
-
-      $("loading").style.display = "block";
-      client.connect(function () {
-        console.log('client connected');
-        $("loading").style.display = "none";
-
-        var div = document.createElement("div");
-        div.id = "__" + host;
-
-        var disconnect = document.createElement("img");
-        disconnect.src = "disconnect.png";
-        disconnect.className = "moz-button";
-
-        disconnect.onclick = function () {
-          client.disconnect(function () {
-            console.log("client disconnected");
-            var listing = $("__" + host);
-            delete clients[host];
-            listing.parentElement.removeChild(listing);
-
-            // remove tabs and cards for all chans on that host
-            var nodes = document.querySelectorAll("." + host.replace(/\./g, "-"));
-            for (var i = 0; i < nodes.length; ++i) {
-              var el = nodes[i];
-              el.parentNode.removeChild(el)
-            }
-            for (var nick in privMSG) {
-              if (host === privMSG[nick].host) {
-                delete privMSG[nick];
-              }
-            }
-          });
-        };
-
-        div.appendChild(disconnect);
-        div.appendChild(document.createTextNode(host));
-        div.onclick = function () {
-          hostEle.value = host;
-        };
-        $("hostlist").appendChild(div);
-
-        channels.split(/\s*,\s*/).forEach(function (chan) {
-          chan = chan.trim();
-          if (chan.length === 0) {
-            return;
-          }
-          if (chan[0] !== "#") {
-            chan = "#" + chan;
-          }
-          client.join(chan, function () {
-            console.log("Joined ", chan);
-            new Tab({
-              chan: chan,
-              client: client,
-              nick: username,
-              host: host,
-            });
-          });
-        });
+    // cache clients by host
+    if (!clients[host]) {
+      clients[host] = new Client(host, username, {
+        stripColors: true,
+        autoConnect: false,
+        secure: secure,
+        port: port || (secure ? 6697 : 6667)
+        //debug: true,
       });
+    }
 
-      client.addListener("pm", function (from, text, message) {
-        if (!(from in privMSG)) {
-          privMSG[from] = new Tab({
-            chan: from,
+    var client = clients[host];
+
+    $("loading").style.display = "block";
+    client.connect(function () {
+      console.log('client connected');
+      $("loading").style.display = "none";
+
+      var div = document.createElement("div");
+      div.id = "__" + host;
+
+      var disconnect = document.createElement("img");
+      disconnect.src = "disconnect.png";
+      disconnect.className = "moz-button";
+
+      disconnect.onclick = function () {
+        client.disconnect(function () {
+          console.log("client disconnected");
+          var listing = $("__" + host);
+          delete clients[host];
+          listing.parentElement.removeChild(listing);
+
+          // remove tabs and cards for all chans on that host
+          var nodes = document.querySelectorAll("." + host.replace(/\./g, "-"));
+          for (var i = 0; i < nodes.length; ++i) {
+            var el = nodes[i];
+            el.parentNode.removeChild(el)
+          }
+          for (var nick in privMSG) {
+            if (host === privMSG[nick].host) {
+              delete privMSG[nick];
+            }
+          }
+        });
+      };
+
+      div.appendChild(disconnect);
+      div.appendChild(document.createTextNode(host));
+      div.onclick = function () {
+        hostEle.value = host;
+      };
+      $("hostlist").appendChild(div);
+
+      channels.split(/\s*,\s*/).forEach(function (chan) {
+        chan = chan.trim();
+        if (chan.length === 0) {
+          return;
+        }
+        if (chan[0] !== "#") {
+          chan = "#" + chan;
+        }
+        client.join(chan, function () {
+          console.log("Joined ", chan);
+          new Tab({
+            chan: chan,
             client: client,
             nick: username,
             host: host,
           });
-        }
-        privMSG[from].addText(from, text);
+        });
       });
-    }
+    });
+
+    client.addListener("pm", function (from, text, message) {
+      if (!(from in privMSG)) {
+        privMSG[from] = new Tab({
+          chan: from,
+          client: client,
+          nick: username,
+          host: host,
+        });
+      }
+      privMSG[from].addText(from, text);
+    });
   });
 });
 
