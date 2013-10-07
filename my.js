@@ -57,13 +57,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
   $("secure").onchange = function () {
-    var port = $("port");
-    if (port.value) {
-      return;
+    var $port = $("port");
+    if (!$port.value) {
+      var secure = this.checked;
+      var hint = $port.placeholder.replace(/\d+/, secure ? '6697' : '6667');
+      $port.placeholder = hint;
     }
-    var secure = this.checked;
-    var hint = port.placeholder.replace(/\d+/, secure ? '6697' : '6667');
-    port.placeholder = hint;
   }
 
   if (localStorage.nick) {
