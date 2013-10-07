@@ -6,9 +6,11 @@
   <body>
     <link rel="stylesheet" href="brick.css"/>
     <link rel="stylesheet" href="my.css"/>
+    <link rel="prefetch" type="application/l10n" href="translations.ini"/>
     <script src="brick.js"></script>
     <script src="node-irc/lib/codes.js"></script>
     <script src="node-irc/lib/irc.js"></script>
+    <script src="l10n.js"></script>
     <script src="my.js"></script>
     <x-layout>
       <section>
@@ -20,10 +22,10 @@
             <input type="text" autocorrect="off" autocapitalize="off" placeholder="username" id="username"/>
             <input type="text" autocorrect="off" autocapitalize="off" placeholder="channels" id="channels"/>
           </div>
-          <button id="connect" class="moz-button">Connect</button>
+          <button id="connect" class="moz-button" data-l10n-id="connect">Connect</button>
           <img src="setting.png" id="advanced-link" class="moz-button"/>
           <div id="advanced">
-            <label><input type="checkbox" id="secure"/>Secure</label>
+            <label><input type="checkbox" id="secure" data-l10n-id="secure"/>Secure</label>
             <input type="number" placeholder="port (6667)" id="port" />
           </div>
           <div id="hostlist"></div>
@@ -33,7 +35,7 @@
       </section>
       <footer>
         <x-tabbar id="tabbar">
-          <x-tabbar-tab target-selector="x-deck x-card:first-child">Setup</x-tabbar-tab>
+          <x-tabbar-tab target-selector="x-deck x-card:first-child" data-l10n-id="setup">Setup</x-tabbar-tab>
         </x-tabbar>
       </footer>
     </x-layout>
