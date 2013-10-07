@@ -5,6 +5,7 @@
  * permission notice:
  *
  * Copyright (c) 2010, Martyn Smith
+ * Copyright (c) 2011-2013, Fabien Cazenave
  * Copyright (c) 2013, Yusuke Kamiyamane
  * Copyright (c) 2013, Mark James
  * Copyright (c) 2013, Mozilla Corporation
@@ -199,11 +200,11 @@ function Tab (opts) {
 
   this.input = document.createElement("input");
   this.input.className = "send";
-  this.input.placeholder = "Type here then press <Enter> to send";
+  this.input.placeholder = document.webL10n.get("enter");
   this.input.onkeyup = this.send.bind(this);
 
   this.part = document.createElement("a");
-  this.part.textContent = "close";
+  this.part.textContent = document.webL10n.get("close");
   this.part.className = "part";
   this.part.onclick = this.doPart.bind(this);
   this.part.style.backgroundColor = color;
@@ -222,7 +223,8 @@ function Tab (opts) {
 
   this.client.addListener("message" + opts.chan, this.onMessage.bind(this));
 
-  this.addText(this.nick, "Joined " + opts.chan, "status");
+  var joinStr = document.webL10n.get("join", { channel: opts.chan });
+  this.addText(this.nick, joinStr, "status");
 }
 
 Tab.prototype = {
