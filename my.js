@@ -27,25 +27,7 @@
 var clients = {};
 var privMSG = {};
 
-var entityMap = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': '&quot;',
-  "'": '&#39;'
-};
-
 var $ = document.getElementById.bind(document);
-
-function escapeHtml (string) {
-  if (string === null || string === undefined) {
-    return string;
-  }
-
-  return String(string).replace(/[&<>"']/g, function (s) {
-    return entityMap[s];
-  });
-}
 
 document.addEventListener("DOMContentLoaded", function () {
   var $advanced = $("advanced");
@@ -225,7 +207,7 @@ function Tab (opts) {
 
   var joinStr = document.webL10n.get("join", { channel: opts.chan });
   this.addText(this.nick, joinStr, "status");
-}
+};
 
 Tab.prototype = {
   onMessage: function (from, data) {
@@ -246,7 +228,7 @@ Tab.prototype = {
     var p = document.createElement("p");
     var html = timestamp + " &lt; ";
 
-    var escapeText = escapeHtml(text);
+    var escapeText = this.escapeHtml(text);
     escapeText = escapeText.replace(/(http(s)?:\/\/[^ '"\n<>\]\[\*!@\(\)]+)/g, "<a href='$1' target='_blank'>$1</a>");
 
     if (type) {
@@ -288,6 +270,21 @@ Tab.prototype = {
     this.card.parentNode.removeChild(this.card);
     this.tab.parentNode.removeChild(this.tab);
     $("setup").setAttribute("selected");
-  }
-}
+  },
 
+  escapeChar: function (char, i, string) {
+    var entityMap = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    };
+    var cleaned = entityMap[char];
+    return cleaned ? cleaned : char;
+  },
+
+  escapeHtml: function (string) {
+    return Array.prototype.map.call(string, this.escapeChar).join("");
+  },
+};
