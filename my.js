@@ -65,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // TODO: Add asyncStorage.js
   if (localStorage.presets) {
     var presets = JSON.parse(localStorage.presets);
     $("host").value = presets.host;
@@ -74,13 +73,8 @@ document.addEventListener("DOMContentLoaded", function () {
     $("secure").checked = presets.secure;
     $("port").value = presets.port;
   }
-  if (localStorage.nick) {
-
-  }
 
   $("connect").addEventListener("click", function () {
-    var presets = {};
-
     var hostEle = $("host");
     var userEle = $("username");
     var channelsEle = $("channels");
@@ -92,12 +86,12 @@ document.addEventListener("DOMContentLoaded", function () {
     var secure = $("secure").checked;
 
     if (!host) {
-      alert('Please provide a host');
+      alert("Please provide a host");
       hostEle.focus();
       return;
     }
     if (!username) {
-      alert('Please provide a username');
+      alert("Please provide a username");
       userEle.focus();
       return;
     }
@@ -107,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
       username: username,
       channels: channels,
       port: port,
-      secure: secure
+      secure: secure,
     });
 
     hostEle.value = null;
@@ -119,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
         stripColors: true,
         autoConnect: false,
         secure: secure,
-        port: port || (secure ? 6697 : 6667)
+        port: port || (secure ? 6697 : 6667),
         //debug: true,
       });
     }
@@ -128,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     $("loading").style.display = "block";
     client.connect(function () {
-      console.log('client connected');
+      console.log("client connected");
       $("loading").style.display = "none";
 
       var div = document.createElement("div");
