@@ -38,7 +38,6 @@ function joinChans (channels, client, username, host) {
     if (chan[0] !== "#") {
       chan = "#" + chan;
     }
-    console.log(chan, username, host, client, "joining");
     client.join(chan, function () {
       console.log("Joined ", chan);
       new Tab({
@@ -92,7 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (client) {
       joinChans(channels, client, username, host);
     } else {
-      console.log("I haven't connected yet to " + host + ", connecting");
       client = clients[host] = new Client(host, username, {
         stripColors: true,
         autoConnect: false,

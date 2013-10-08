@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'Open Sans';
-  src: url('OpenSans-SemiBold.ttf')
+  src: url('OpenSans-SemiBold.ttf');
 }
 
 @font-face {
   font-family: 'Open Sans Light';
-  src: url('OpenSans-Light.ttf')
+  src: url('OpenSans-Light.ttf');
 }
 
 h1 {
@@ -119,15 +119,11 @@ input.send {
 }
 
 x-deck {
-  background-color: #E50001;
+  background-image: linear-gradient(#CAE1F4,#EEEEEE);
 }
 
 x-card {
   padding: 5px;
-}
-
-x-card:first-child {
-  background-image: linear-gradient(#CAE1F4,#EEEEEE);
 }
 
 #tabbar x-tabbar-tab {

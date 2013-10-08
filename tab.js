@@ -119,7 +119,7 @@ Tab.prototype = {
     }
     this.card.parentNode.removeChild(this.card);
     this.tab.parentNode.removeChild(this.tab);
-    $("setup").setAttribute("selected");
+    $("container").shuffleTo(0);
   },
 
   escapeChar: function (char, i, string) {
