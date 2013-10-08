@@ -38,10 +38,20 @@ function joinChans (channels, client, username, host) {
     if (chan[0] !== "#") {
       chan = "#" + chan;
     }
-    client.join(chan, function () {
+
+    var chanAndPass = chan.split(" ");
+    var password = null;
+    if (chanAndPass.length > 1) {
+      chan = chanAndPass[0];
+      password = chanAndPass[1];
+      chanAndPass.length = 2;
+    }
+
+    client.join(chanAndPass.join(" "), function () {
       console.log("Joined ", chan);
       new Tab({
         chan: chan,
+        password: password,
         client: client,
         nick: username,
         host: host,
