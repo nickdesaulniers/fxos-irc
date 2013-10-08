@@ -29,6 +29,28 @@ var privMSG = {};
 
 var $ = document.getElementById.bind(document);
 
+function joinChans (channels, client, username, host) {
+  channels.split(/\s*,\s*/).forEach(function (chan) {
+    chan = chan.trim();
+    if (chan.length === 0) {
+      return;
+    }
+    if (chan[0] !== "#") {
+      chan = "#" + chan;
+    }
+    console.log(chan, username, host, client, "joining");
+    client.join(chan, function () {
+      console.log("Joined ", chan);
+      new Tab({
+        chan: chan,
+        client: client,
+        nick: username,
+        host: host,
+      });
+    });
+  });
+};
+
 document.addEventListener("DOMContentLoaded", function () {
   var $advanced = $("advanced");
 
@@ -60,23 +82,28 @@ document.addEventListener("DOMContentLoaded", function () {
     hostEle.value = null;
     channelsEle.value = null;
 
-    if (host && username) {
-      // cache clients by host
-      if (!clients[host]) {
-        clients[host] = new Client(host, username, {
-          stripColors: true,
-          autoConnect: false,
-          secure: secure,
-          port: port || (secure ? 6697 : 6667)
-          //debug: true,
-        });
-      }
+    if (!host || !username) {
+      console.error("No username or host");
+      return;
+    }
 
-      var client = clients[host];
+    // cache clients by host
+    var client = clients[host];
+    if (client) {
+      joinChans(channels, client, username, host);
+    } else {
+      console.log("I haven't connected yet to " + host + ", connecting");
+      client = clients[host] = new Client(host, username, {
+        stripColors: true,
+        autoConnect: false,
+        secure: secure,
+        port: port || (secure ? 6697 : 6667),
+        //debug: true,
+      });
 
       $("loading").style.display = "block";
       client.connect(function () {
-        console.log('client connected');
+        console.log("client connected");
         $("loading").style.display = "none";
 
         var div = document.createElement("div");
@@ -114,24 +141,8 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         $("hostlist").appendChild(div);
 
-        channels.split(/\s*,\s*/).forEach(function (chan) {
-          chan = chan.trim();
-          if (chan.length === 0) {
-            return;
-          }
-          if (chan[0] !== "#") {
-            chan = "#" + chan;
-          }
-          client.join(chan, function () {
-            console.log("Joined ", chan);
-            new Tab({
-              chan: chan,
-              client: client,
-              nick: username,
-              host: host,
-            });
-          });
-        });
+        joinChans(channels, client, username, host);
+
       });
 
       client.addListener("pm", function (from, text, message) {

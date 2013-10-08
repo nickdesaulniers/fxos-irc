@@ -10,6 +10,7 @@ var FlatUIColors = [
 ];
 
 function Tab (opts) {
+  var $ = document.getElementById.bind(document);
   var host = opts.host.replace(/\./g, "-");
 
   this.card = document.createElement("x-card");
