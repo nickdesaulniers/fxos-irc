@@ -1,3 +1,4 @@
+var tabCounter = 0;
 var FlatUIColors = [
   "#1abc9c",
   "#2ecc71",
@@ -14,7 +15,7 @@ function Tab (opts) {
   var host = opts.host.replace(/\./g, "-");
 
   this.card = document.createElement("x-card");
-  this.card.id = "__" + opts.chan.substr(1);
+  this.card.id = "__" + tabCounter++;
   this.card.className = host;
 
   var color = FlatUIColors[FlatUIColors.length * Math.random() | 0];
