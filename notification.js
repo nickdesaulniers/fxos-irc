@@ -18,3 +18,4 @@ function sendNotification (title, options) {
   }
   sendNotification(title, options);
 };
+
