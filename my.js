@@ -163,6 +163,12 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
         privMSG[from].addText(from, text);
+
+        var img = "https://raw.github.com/nickdesaulniers/fxos-irc/master/128.png";
+        if ($("container").selectedCard.id !== privMSG[from].card.id) {
+          // This hack is because origin is not supported in manifests for < 1.1.
+          sendNotification(from, { body: text, icon: img });
+        }
       });
     }
   });
