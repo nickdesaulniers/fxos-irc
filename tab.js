@@ -21,15 +21,19 @@ var FlatUIColors = [
 function Tab (opts) {
   var $ = document.getElementById.bind(document);
   var host = opts.host.replace(/\./g, "-");
+  var color = FlatUIColors[FlatUIColors.length * Math.random() | 0];
 
   this.card = document.createElement("x-card");
   this.card.id = "__" + tabCounter++;
-  this.card.className = host;
-
-  var color = FlatUIColors[FlatUIColors.length * Math.random() | 0];
+  this.card.classList.add(host);
   this.card.style.backgroundColor = color;
-  this.tab = document.createElement("x-tabbar-tab");
+  this.card.addEventListener("show", function () {
+    if (this.tab.classList.contains("glow")) {
+      this.tab.classList.remove("glow");
+    }
+  }.bind(this));
 
+  this.tab = document.createElement("x-tabbar-tab");
   this.tab.setAttribute("target-selector", "x-deck x-card#" + this.card.id);
   this.tab.textContent = opts.chan;
   this.tab.style.backgroundColor = color;
@@ -70,6 +74,10 @@ function Tab (opts) {
 
 Tab.prototype = {
   onMessage: function (from, data) {
+    if ($("container").selectedCard.id !== this.card.id &&
+        !this.tab.classList.contains("glow")) {
+      this.tab.classList.add("glow");
+    }
     this.addText(from, data);
   },
 

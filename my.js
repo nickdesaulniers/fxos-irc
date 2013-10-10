@@ -154,20 +154,24 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       client.addListener("pm", function (from, text, message) {
-        if (!(from in privMSG)) {
-          privMSG[from] = new Tab({
+        var msg = privMSG[from];
+        if (!msg) {
+          msg = privMSG[from] = new Tab({
             chan: from,
             client: client,
             nick: username,
             host: host,
           });
         }
-        privMSG[from].addText(from, text);
+        msg.addText(from, text);
 
         var img = "https://raw.github.com/nickdesaulniers/fxos-irc/master/128.png";
-        if ($("container").selectedCard.id !== privMSG[from].card.id) {
+        if ($("container").selectedCard.id !== msg.card.id) {
           // This hack is because origin is not supported in manifests for < 1.1.
           sendNotification(from, { body: text, icon: img });
+          if (!msg.tab.classList.contains("glow")) {
+            msg.tab.classList.add("glow");
+          }
         }
       });
     }
