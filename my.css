@@ -8,6 +8,12 @@
   src: url('OpenSans-Light.ttf');
 }
 
+@keyframes glow {
+  to {
+    background-color: black;
+  }
+}
+
 h1 {
   margin: 0;
   font-weight: normal;
@@ -53,6 +59,14 @@ html, body {
   border: 0;
   text-shadow: 0 1px 0 rgba(0,0,0,0.25);
   transition: all linear .25s;
+}
+
+.glow {
+  animation-name: glow;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
 }
 
 .moz-button:active {
