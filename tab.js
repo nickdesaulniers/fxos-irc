@@ -78,14 +78,14 @@ Tab.prototype = {
         !this.tab.classList.contains("glow")) {
       this.tab.classList.add("glow");
     }
-    this.addText(from, data);
+    this.addText(from, Utf8.decode(data));
   },
 
   send: function (e) {
     var say = this.input.value;
     if (e.keyCode === 13 && say) {
       this.input.value = null;
-      this.client.say(this.chan, say);
+      this.client.say(this.chan, Utf8.encode(say));
       this.addText(this.nick, say);
     }
   },
