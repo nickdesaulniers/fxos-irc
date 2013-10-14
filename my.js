@@ -163,12 +163,12 @@ document.addEventListener("DOMContentLoaded", function () {
             host: host,
           });
         }
-        msg.addText(from, text);
+        msg.addText(from, Utf8.decode(text));
 
         var img = "https://raw.github.com/nickdesaulniers/fxos-irc/master/128.png";
         if ($("container").selectedCard.id !== msg.card.id) {
           // This hack is because origin is not supported in manifests for < 1.1.
-          sendNotification(from, { body: text, icon: img });
+          sendNotification(from, { body: Utf8.decode(text), icon: img });
           if (!msg.tab.classList.contains("glow")) {
             msg.tab.classList.add("glow");
           }
