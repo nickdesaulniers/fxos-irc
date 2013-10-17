@@ -19,7 +19,6 @@ var FlatUIColors = [
 ];
 
 function Tab (opts) {
-  var $ = document.getElementById.bind(document);
   var host = opts.host.replace(/\./g, "-");
   var color = FlatUIColors[FlatUIColors.length * Math.random() | 0];
 
@@ -52,25 +51,28 @@ function Tab (opts) {
   part.src = "/close.png";
   part.onclick = this.doPart.bind(this);
 
-  var userList = document.createElement("img");
-  userList.src = "user.png";
-  userList.onclick = function () { alert("userlist"); };
-
   var controls = document.createElement("div");
   controls.className = "part";
   controls.style.backgroundColor = color;
-  controls.appendChild(userList);
+
+  var userList = null;
+  if (opts.userList) {
+    userList = document.createElement("img");
+    userList.src = "user.png";
+    userList.onclick = this.createUserList.bind(this);
+
+    controls.appendChild(userList);
+  }
   controls.appendChild(part);
 
   card.appendChild(log);
   card.appendChild(input);
   card.appendChild(controls);
 
-  $("container").appendChild(card);
-  $("tabbar").appendChild(tab);
+  document.getElementById("container").appendChild(card);
+  document.getElementById("tabbar").appendChild(tab);
 
   this.client = opts.client;
-  this.chan = opts.chan;
   this.nick = opts.nick;
   this.host = opts.host;
   this.card = card;
@@ -78,15 +80,18 @@ function Tab (opts) {
   this.log = log;
   this.input = input;
 
-  this.client.addListener("message" + opts.chan, this.onMessage.bind(this));
-
-  var joinStr = document.webL10n.get("join", { channel: opts.chan });
-  this.addText(this.nick, joinStr, "status");
+  var joinStr = null;
+  if (opts.chan) {
+    this.chan = opts.chan;
+    this.client.addListener("message" + opts.chan, this.onMessage.bind(this));
+    joinStr = document.webL10n.get("join", { channel: opts.chan });
+    this.addText(this.nick, joinStr, "status");
+  }
 };
 
 Tab.prototype = {
   onMessage: function (from, data) {
-    if ($("container").selectedCard.id !== this.card.id &&
+    if (document.getElementById("container").selectedCard.id !== this.card.id &&
         !this.tab.classList.contains("glow")) {
       this.tab.classList.add("glow");
     }
@@ -134,7 +139,7 @@ Tab.prototype = {
           chan: name,
           client: this.client,
           nick: this.nick,
-          host: this.host
+          host: this.host,
         });
       }
     }
@@ -148,7 +153,7 @@ Tab.prototype = {
     }
     this.card.parentNode.removeChild(this.card);
     this.tab.parentNode.removeChild(this.tab);
-    $("container").shuffleTo(0);
+    document.getElementById("container").shuffleTo(0);
   },
 
   escapeChar: function (char, i, string) {
@@ -165,6 +170,10 @@ Tab.prototype = {
 
   escapeHtml: function (string) {
     return Array.prototype.map.call(string, this.escapeChar).join("");
+  },
+
+  createUserList: function () {
+    alert("creating user list");
   },
 };
 

@@ -57,6 +57,7 @@ function joinChans (channels, client, username, host) {
         client: client,
         nick: username,
         host: host,
+        userList: true,
       });
     });
   });
