@@ -140,7 +140,7 @@ x-deck {
   background-image: linear-gradient(#CAE1F4,#EEEEEE);
 }
 
-x-card {
+x-card#setup {
   padding: 5px;
 }
 

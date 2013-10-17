@@ -65,9 +65,16 @@ function Tab (opts) {
   }
   controls.appendChild(part);
 
-  card.appendChild(log);
-  card.appendChild(input);
-  card.appendChild(controls);
+  var flipbox = document.createElement("x-flipbox");
+  var front = document.createElement("div");
+  var back = document.createElement("div");
+  front.appendChild(log);
+  front.appendChild(input);
+  front.appendChild(controls);
+  flipbox.appendChild(front);
+  flipbox.appendChild(back);
+
+  card.appendChild(flipbox);
 
   document.getElementById("container").appendChild(card);
   document.getElementById("tabbar").appendChild(tab);
