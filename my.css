@@ -95,7 +95,7 @@ html, body {
   display: none;
 }
 
-a.part {
+.part {
   position: absolute;
   top: 0;
   right: 0;
@@ -103,6 +103,10 @@ a.part {
   padding: 5px;
   border-bottom-left-radius: 5px;
   color: white;
+}
+
+.part img {
+  padding: 0 10px;
 }
 
 div.chat {
