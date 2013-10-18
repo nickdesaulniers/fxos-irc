@@ -47,31 +47,30 @@ function Tab (opts) {
   input.placeholder = document.webL10n.get("enter");
   input.onkeyup = this.send.bind(this);
 
-  var part = document.createElement("img");
-  part.src = "/close.png";
-  part.onclick = this.doPart.bind(this);
-
-  var controls = document.createElement("div");
-  controls.className = "part";
-  controls.style.backgroundColor = color;
-
-  var userList = null;
-  if (opts.userList) {
-    userList = document.createElement("img");
-    userList.src = "user.png";
-    userList.onclick = this.createUserList.bind(this);
-
-    controls.appendChild(userList);
-  }
-  controls.appendChild(part);
-
   var flipbox = document.createElement("x-flipbox");
+
+  var controls = Tab.addControls(
+    card,
+    this.doPart.bind(this),
+    opts.userList ? flipbox.showBack.bind(flipbox) : null
+  );
+
   var front = document.createElement("div");
-  var back = document.createElement("div");
   front.appendChild(log);
   front.appendChild(input);
   front.appendChild(controls);
   flipbox.appendChild(front);
+
+  var backControls = Tab.addControls(card, flipbox.showFront.bind(flipbox));
+
+  var backLog = document.createElement("div");
+  backLog.className = "chat";
+  backLog.onclick = this.openPrivate.bind(this);
+
+  var back = document.createElement("div");
+  back.style.backgroundColor = color;
+  back.appendChild(backLog);
+  back.appendChild(backControls);
   flipbox.appendChild(back);
 
   card.appendChild(flipbox);
@@ -94,6 +93,33 @@ function Tab (opts) {
     joinStr = document.webL10n.get("join", { channel: opts.chan });
     this.addText(this.nick, joinStr, "status");
   }
+
+  this.client.addListener("names" + opts.chan, function (nicks) {
+    Object.keys(nicks).forEach(function (nick) {
+      this.addText(nick, '', null, backLog);
+    }.bind(this));
+  }.bind(this));
+};
+
+Tab.addControls = function (card, onClose, onUserList) {
+  var controls = document.createElement("div");
+  controls.className = "part";
+  controls.style.backgroundColor = card.style.backgroundColor;
+
+  var userList = null;
+  if (typeof onUserList === "function") {
+    userList = document.createElement("img");
+    userList.src = "user.png";
+    userList.onclick = onUserList;
+    controls.appendChild(userList);
+  }
+
+  var part = document.createElement("img");
+  part.src = "/close.png";
+  part.onclick = onClose;
+  controls.appendChild(part);
+
+  return controls;
 };
 
 Tab.prototype = {
@@ -114,7 +140,7 @@ Tab.prototype = {
     }
   },
 
-  addText: function (user, text, type) {
+  addText: function (user, text, type, target) {
     var timestamp = (new Date).toTimeString().substr(0, 5);
     var p = document.createElement("p");
     var html = timestamp + " &lt; ";
@@ -133,8 +159,9 @@ Tab.prototype = {
     }
     p.innerHTML = html;
 
-    this.log.appendChild(p);
-    this.log.scrollTop = this.log.scrollHeight;
+    target = target || this.log;
+    target.appendChild(p);
+    target.scrollTop = this.log.scrollHeight;
   },
 
   openPrivate: function (e) {
@@ -179,8 +206,5 @@ Tab.prototype = {
     return Array.prototype.map.call(string, this.escapeChar).join("");
   },
 
-  createUserList: function () {
-    alert("creating user list");
-  },
 };
 
