@@ -95,9 +95,11 @@ function Tab (opts) {
   }
 
   this.client.addListener("names" + opts.chan, function (nicks) {
+    var frag = document.createDocumentFragment();
     Object.keys(nicks).forEach(function (nick) {
-      this.addText(nick, '', null, backLog);
+      this.addNick(nick, frag);
     }.bind(this));
+    backLog.appendChild(frag);
   }.bind(this));
 };
 
@@ -135,8 +137,8 @@ Tab.prototype = {
     var say = this.input.value;
     if (e.keyCode === 13 && say) {
       this.input.value = null;
-      this.client.say(this.chan, Utf8.encode(say));
       this.addText(this.nick, say);
+      this.client.say(this.chan, Utf8.encode(say));
     }
   },
 
@@ -161,7 +163,26 @@ Tab.prototype = {
 
     target = target || this.log;
     target.appendChild(p);
-    target.scrollTop = this.log.scrollHeight;
+    target.scrollTop = target.scrollHeight;
+  },
+
+  addNick: function (nick, target) {
+    var open = document.createTextNode(" < ");
+    var close = document.createTextNode(" > ");
+    var text = document.createTextNode(nick);
+    var p = document.createElement("p");
+    var a = null;
+    p.appendChild(open);
+    if (nick !== this.nick) {
+      a = document.createElement("a");
+      a.href = "#" + nick;
+      a.appendChild(text);
+      p.appendChild(a);
+    } else {
+      p.appendChild(text);
+    }
+    p.appendChild(close);
+    target.appendChild(p);
   },
 
   openPrivate: function (e) {
