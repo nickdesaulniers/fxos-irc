@@ -97,7 +97,7 @@ function Tab (opts) {
   this.client.addListener("names" + opts.chan, function (nicks) {
     var frag = document.createDocumentFragment();
     Object.keys(nicks).forEach(function (nick) {
-      this.addNick(nick, frag);
+      frag.appendChild(this.addNick(nick));
     }.bind(this));
     backLog.appendChild(frag);
   }.bind(this));
@@ -144,29 +144,28 @@ Tab.prototype = {
 
   addText: function (user, text, type, target) {
     var timestamp = (new Date).toTimeString().substr(0, 5);
-    var p = document.createElement("p");
+    var p = null;
     var html = timestamp + " &lt; ";
 
     var escapeText = this.escapeHtml(text);
     escapeText = escapeText.replace(/(http(s)?:\/\/[^ '"\n<>\]\[\*!@\(\)]+)/g, "<a href='$1' target='_blank'>$1</a>");
 
     if (type) {
+      p = document.createElement("p");
       p.classList.add(type);
-      html += escapeText;
-    } else if (user === this.nick) {
-      p.classList.add("mine");
-      html += user + " &gt; " + escapeText;
+      p.appendChild(document.createTextNode(timestamp + " < " + text));
     } else {
-      html += "<a href='#" + user + "'>" + user + "</a> &gt; " + escapeText;
+      p = this.addNick(user);
+      p.insertBefore(document.createTextNode(timestamp), p.firstChild);
+      p.appendChild(document.createTextNode(escapeText));
     }
-    p.innerHTML = html;
 
     target = target || this.log;
     target.appendChild(p);
     target.scrollTop = target.scrollHeight;
   },
 
-  addNick: function (nick, target) {
+  addNick: function (nick) {
     var open = document.createTextNode(" < ");
     var close = document.createTextNode(" > ");
     var text = document.createTextNode(nick);
@@ -182,7 +181,7 @@ Tab.prototype = {
       p.appendChild(text);
     }
     p.appendChild(close);
-    target.appendChild(p);
+    return p;
   },
 
   openPrivate: function (e) {
