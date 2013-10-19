@@ -19,62 +19,114 @@ var FlatUIColors = [
 ];
 
 function Tab (opts) {
-  var $ = document.getElementById.bind(document);
   var host = opts.host.replace(/\./g, "-");
   var color = FlatUIColors[FlatUIColors.length * Math.random() | 0];
 
-  this.card = document.createElement("x-card");
-  this.card.id = "__" + tabCounter++;
-  this.card.classList.add(host);
-  this.card.style.backgroundColor = color;
-  this.card.addEventListener("show", function () {
+  var card = document.createElement("x-card");
+  card.id = "__" + tabCounter++;
+  card.classList.add(host);
+  card.style.backgroundColor = color;
+  card.addEventListener("show", function () {
     if (this.tab.classList.contains("glow")) {
       this.tab.classList.remove("glow");
     }
   }.bind(this));
 
-  this.tab = document.createElement("x-tabbar-tab");
-  this.tab.setAttribute("target-selector", "x-deck x-card#" + this.card.id);
-  this.tab.textContent = opts.chan;
-  this.tab.style.backgroundColor = color;
-  this.tab.className = host;
+  var tab = document.createElement("x-tabbar-tab");
+  tab.setAttribute("target-selector", "x-deck x-card#" + card.id);
+  tab.textContent = opts.chan;
+  tab.style.backgroundColor = color;
+  tab.className = host;
 
-  this.log = document.createElement("div");
-  this.log.className = "chat";
-  this.log.onclick = this.openPrivate.bind(this);
+  var log = document.createElement("div");
+  log.className = "chat";
+  log.onclick = this.openPrivate.bind(this);
 
-  this.input = document.createElement("input");
-  this.input.className = "send";
-  this.input.placeholder = document.webL10n.get("enter");
-  this.input.onkeyup = this.send.bind(this);
+  var input = document.createElement("input");
+  input.className = "send";
+  input.placeholder = document.webL10n.get("enter");
+  input.onkeyup = this.send.bind(this);
 
-  this.part = document.createElement("a");
-  this.part.textContent = document.webL10n.get("close");
-  this.part.className = "part";
-  this.part.onclick = this.doPart.bind(this);
-  this.part.style.backgroundColor = color;
+  var flipbox = document.createElement("x-flipbox");
 
-  this.card.appendChild(this.log);
-  this.card.appendChild(this.input);
-  this.card.appendChild(this.part);
+  var controls = Tab.addControls(
+    card,
+    this.doPart.bind(this),
+    opts.userList ? flipbox.showBack.bind(flipbox) : null
+  );
 
-  $("container").appendChild(this.card);
-  $("tabbar").appendChild(this.tab);
+  var front = document.createElement("div");
+  front.appendChild(log);
+  front.appendChild(input);
+  front.appendChild(controls);
+  flipbox.appendChild(front);
+
+  var backControls = Tab.addControls(card, flipbox.showFront.bind(flipbox));
+
+  var backLog = document.createElement("div");
+  backLog.className = "chat";
+  backLog.onclick = this.openPrivate.bind(this);
+
+  var back = document.createElement("div");
+  back.style.backgroundColor = color;
+  back.appendChild(backLog);
+  back.appendChild(backControls);
+  flipbox.appendChild(back);
+
+  card.appendChild(flipbox);
+
+  document.getElementById("container").appendChild(card);
+  document.getElementById("tabbar").appendChild(tab);
 
   this.client = opts.client;
-  this.chan = opts.chan;
   this.nick = opts.nick;
   this.host = opts.host;
+  this.card = card;
+  this.tab = tab;
+  this.log = log;
+  this.input = input;
 
-  this.client.addListener("message" + opts.chan, this.onMessage.bind(this));
+  var joinStr = null;
+  if (opts.chan) {
+    this.chan = opts.chan;
+    this.client.addListener("message" + opts.chan, this.onMessage.bind(this));
+    joinStr = document.webL10n.get("join", { channel: opts.chan });
+    this.addText(this.nick, joinStr, "status");
+  }
 
-  var joinStr = document.webL10n.get("join", { channel: opts.chan });
-  this.addText(this.nick, joinStr, "status");
+  this.client.addListener("names" + opts.chan, function (nicks) {
+    var frag = document.createDocumentFragment();
+    Object.keys(nicks).forEach(function (nick) {
+      frag.appendChild(this.addNick(nick));
+    }.bind(this));
+    backLog.appendChild(frag);
+  }.bind(this));
+};
+
+Tab.addControls = function (card, onClose, onUserList) {
+  var controls = document.createElement("div");
+  controls.className = "part";
+  controls.style.backgroundColor = card.style.backgroundColor;
+
+  var userList = null;
+  if (typeof onUserList === "function") {
+    userList = document.createElement("img");
+    userList.src = "user.png";
+    userList.onclick = onUserList;
+    controls.appendChild(userList);
+  }
+
+  var part = document.createElement("img");
+  part.src = "/close.png";
+  part.onclick = onClose;
+  controls.appendChild(part);
+
+  return controls;
 };
 
 Tab.prototype = {
   onMessage: function (from, data) {
-    if ($("container").selectedCard.id !== this.card.id &&
+    if (document.getElementById("container").selectedCard.id !== this.card.id &&
         !this.tab.classList.contains("glow")) {
       this.tab.classList.add("glow");
     }
@@ -85,32 +137,51 @@ Tab.prototype = {
     var say = this.input.value;
     if (e.keyCode === 13 && say) {
       this.input.value = null;
-      this.client.say(this.chan, Utf8.encode(say));
       this.addText(this.nick, say);
+      this.client.say(this.chan, Utf8.encode(say));
     }
   },
 
-  addText: function (user, text, type) {
+  addText: function (user, text, type, target) {
     var timestamp = (new Date).toTimeString().substr(0, 5);
-    var p = document.createElement("p");
+    var p = null;
     var html = timestamp + " &lt; ";
 
     var escapeText = this.escapeHtml(text);
     escapeText = escapeText.replace(/(http(s)?:\/\/[^ '"\n<>\]\[\*!@\(\)]+)/g, "<a href='$1' target='_blank'>$1</a>");
 
     if (type) {
+      p = document.createElement("p");
       p.classList.add(type);
-      html += escapeText;
-    } else if (user === this.nick) {
-      p.classList.add("mine");
-      html += user + " &gt; " + escapeText;
+      p.appendChild(document.createTextNode(timestamp + " < " + text));
     } else {
-      html += "<a href='#" + user + "'>" + user + "</a> &gt; " + escapeText;
+      p = this.addNick(user);
+      p.insertBefore(document.createTextNode(timestamp), p.firstChild);
+      p.appendChild(document.createTextNode(escapeText));
     }
-    p.innerHTML = html;
 
-    this.log.appendChild(p);
-    this.log.scrollTop = this.log.scrollHeight;
+    target = target || this.log;
+    target.appendChild(p);
+    target.scrollTop = target.scrollHeight;
+  },
+
+  addNick: function (nick) {
+    var open = document.createTextNode(" < ");
+    var close = document.createTextNode(" > ");
+    var text = document.createTextNode(nick);
+    var p = document.createElement("p");
+    var a = null;
+    p.appendChild(open);
+    if (nick !== this.nick) {
+      a = document.createElement("a");
+      a.href = "#" + nick;
+      a.appendChild(text);
+      p.appendChild(a);
+    } else {
+      p.appendChild(text);
+    }
+    p.appendChild(close);
+    return p;
   },
 
   openPrivate: function (e) {
@@ -122,7 +193,7 @@ Tab.prototype = {
           chan: name,
           client: this.client,
           nick: this.nick,
-          host: this.host
+          host: this.host,
         });
       }
     }
@@ -136,7 +207,7 @@ Tab.prototype = {
     }
     this.card.parentNode.removeChild(this.card);
     this.tab.parentNode.removeChild(this.tab);
-    $("container").shuffleTo(0);
+    document.getElementById("container").shuffleTo(0);
   },
 
   escapeChar: function (char, i, string) {
@@ -154,5 +225,6 @@ Tab.prototype = {
   escapeHtml: function (string) {
     return Array.prototype.map.call(string, this.escapeChar).join("");
   },
+
 };
 
