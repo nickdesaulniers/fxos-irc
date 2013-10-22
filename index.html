@@ -16,6 +16,11 @@
     <script src="notification.js"></script>
     <script src="my.js"></script>
     <x-layout>
+      <header>
+        <x-tabbar id="tabbar">
+          <x-tabbar-tab target-selector="x-deck x-card:first-child" data-l10n-id="setup">Setup</x-tabbar-tab>
+        </x-tabbar>
+      </header>
       <section>
       <x-deck transition-type="scrollLeft" id="container">
         <x-card id="setup">
@@ -36,11 +41,6 @@
         </x-card>
       </x-deck>
       </section>
-      <footer>
-        <x-tabbar id="tabbar">
-          <x-tabbar-tab target-selector="x-deck x-card:first-child" data-l10n-id="setup">Setup</x-tabbar-tab>
-        </x-tabbar>
-      </footer>
     </x-layout>
   </body>
 </html>
