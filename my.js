@@ -82,11 +82,12 @@ document.addEventListener("DOMContentLoaded", function () {
     var hostEle = $("host");
     var userEle = $("username");
     var channelsEle = $("channels");
+    var portEle = $("port");
 
     var host = hostEle.value;
     var username = userEle.value;
     var channels = channelsEle.value;
-    var port = $("port").value;
+    var port = portEle.value;
     var secure = $("secure").checked;
 
     localStorage.nick = username;
@@ -100,6 +101,11 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("username invalid");
       return;
     };
+
+    if (portEle.validity.rangeOverflow || portEle.validity.rangeUnderflow) {
+      console.error("port " + port + " is not > 0 and < 65536");
+      return;
+    }
 
     if (!navigator.onLine) {
       alert(document.webL10n.get("offline"));
