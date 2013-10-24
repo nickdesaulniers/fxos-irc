@@ -96,8 +96,14 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    if (userEle.validity.patternMismatch) {
+      console.error("username invalid");
+      return;
+    };
+
     if (!navigator.onLine) {
       alert(document.webL10n.get("offline"));
+      console.error("offline");
       return;
     }
 
