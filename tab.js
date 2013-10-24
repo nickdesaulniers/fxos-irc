@@ -145,7 +145,6 @@ Tab.prototype = {
   addText: function (user, text, type, target) {
     var timestamp = (new Date).toTimeString().substr(0, 5);
     var p = null;
-    var html = timestamp + " &lt; ";
 
     var escapeText = this.escapeHtml(text);
     escapeText = escapeText.replace(/(http(s)?:\/\/[^ '"\n<>\]\[\*!@\(\)]+)/g, "<a href='$1' target='_blank'>$1</a>");
@@ -153,11 +152,11 @@ Tab.prototype = {
     if (type) {
       p = document.createElement("p");
       p.classList.add(type);
-      p.appendChild(document.createTextNode(timestamp + " < " + text));
+      p.appendChild(document.createTextNode(timestamp + " < " + escapeText));
     } else {
       p = this.addNick(user);
       p.insertBefore(document.createTextNode(timestamp), p.firstChild);
-      p.appendChild(document.createTextNode(escapeText));
+      p.innerHTML += escapeText;
     }
 
     target = target || this.log;
