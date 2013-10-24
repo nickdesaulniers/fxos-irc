@@ -99,6 +99,11 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    if (!navigator.onLine) {
+      alert(document.webL10n.get("offline"));
+      return;
+    }
+
     // cache clients by host
     var client = clients[host];
     if (client) {
