@@ -91,9 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     localStorage.nick = username;
 
-    hostEle.value = null;
-    channelsEle.value = null;
-
     if (!host || !username) {
       console.error("No username or host");
       return;
@@ -108,6 +105,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var client = clients[host];
     if (client) {
       joinChans(channels, client, username, host);
+      hostEle.value = null;
+      channelsEle.value = null;
     } else {
       client = clients[host] = new Client(host, username, {
         stripColors: true,
@@ -121,6 +120,9 @@ document.addEventListener("DOMContentLoaded", function () {
       client.connect(function () {
         console.log("client connected");
         $("loading").style.display = "none";
+
+        hostEle.value = null;
+        channelsEle.value = null;
 
         var div = document.createElement("div");
         div.id = "__" + host;
