@@ -186,6 +186,7 @@ Tab.prototype = {
   openPrivate: function (e) {
     if (e.target.tagName === "A" && !e.target.target) {
       var name = e.target.textContent;
+      e.preventDefault();
 
       if (!privMSG[name] && name !== this.nick) {
         privMSG[name] = new Tab({
