@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'Open Sans';
-  src: url('fonts/OpenSans-SemiBold.ttf');
+  src: url('../fonts/OpenSans-SemiBold.ttf');
 }
 
 @font-face {
   font-family: 'Open Sans Light';
-  src: url('fonts/OpenSans-Light.ttf');
+  src: url('../fonts/OpenSans-Light.ttf');
 }
 
 @keyframes glow {
