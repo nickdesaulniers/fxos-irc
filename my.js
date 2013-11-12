@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
         div.id = "__" + host;
 
         var disconnect = document.createElement("img");
-        disconnect.src = "disconnect.png";
+        disconnect.src = "images/disconnect.png";
         disconnect.className = "moz-button";
 
         disconnect.onclick = function () {

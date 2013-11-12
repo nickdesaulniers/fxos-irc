@@ -16,7 +16,7 @@
     }
   },
   "icons": {
-    "128": "/128.png"
+    "128": "/images/128.png"
   },
   "type": "privileged"
 }

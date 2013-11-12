@@ -111,13 +111,13 @@ Tab.addControls = function (card, onClose, onUserList) {
   var userList = null;
   if (typeof onUserList === "function") {
     userList = document.createElement("img");
-    userList.src = "user.png";
+    userList.src = "images/user.png";
     userList.onclick = onUserList;
     controls.appendChild(userList);
   }
 
   var part = document.createElement("img");
-  part.src = "/close.png";
+  part.src = "images/close.png";
   part.onclick = onClose;
   controls.appendChild(part);
 
