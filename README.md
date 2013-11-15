@@ -10,9 +10,7 @@
 ## Running in Desktop Firefox
 1. Turn on mozTCPSocket pref
 2. Add tcp-socket permission for a domain
-  a. Hosting it locally
-  - or -
-  b. Github pages
+  - Hosting it locally
 3. Run
 
 [Idea](https://github.com/mozilla-b2g/gaia/tree/master/apps/email#running-in-firefox)
@@ -40,9 +38,6 @@ the bottom of my `/etc/hosts` file:
 ```
 127.0.0.1 firesea.mozilla.org
 ```
-
-### Add tct-socket permission for a domain (gh-pages)
-Not implemented yet.
 
 For whichever method you choose (locally or gh-pages), you need to add a
 permission for it.  If you are hosting it locally, you would:
