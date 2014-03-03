@@ -97,7 +97,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (!username) {
+      var min = 1000,
+          max = 9999;
+      var random = Math.floor(Math.random() * (max - min)) + min;
       username = document.webL10n.get('defaultUsername');
+      username += random;
+      var usernameInput = document.getElementById('username');
+      var placeholder = usernameInput.placeholder;
+      placeholder += random;
+      usernameInput.placeholder = placeholder;
     }
 
     if (!channels) {
