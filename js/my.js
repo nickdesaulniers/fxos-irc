@@ -97,9 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (!username) {
-      var min = 1000,
-          max = 9999;
-      var random = Math.floor(Math.random() * (max - min)) + min;
+      var random = Math.floor(Math.random() * 10000)
       username = document.webL10n.get('defaultUsername');
       username += random;
       var usernameInput = document.getElementById('username');
