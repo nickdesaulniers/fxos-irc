@@ -92,9 +92,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     localStorage.nick = username;
 
-    if (!host || !username) {
-      console.error("No username or host");
-      return;
+    if (!host) {
+      host = document.webL10n.get('defaultHost');
+    }
+
+    if (!username) {
+      var random = Math.floor(Math.random() * 10000)
+      username = document.webL10n.get('defaultUsername');
+      username += random;
+    }
+
+    if (!channels) {
+      channels = document.webL10n.get('defaultChannels');
     }
 
     if (userEle.validity.patternMismatch) {

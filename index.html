@@ -22,13 +22,13 @@
         <x-card id="setup">
           <h1>Firesea IRC</h1>
           <div class="connect">
-            <input type="text" placeholder="host" id="host"
-                   data-l10n-id="host"/>
-            <input type="text" placeholder="username" id="username"
-                   data-l10n-id="username"
-                   pattern="^[a-z_\-\[\]\\^{}|`][a-z0-9_\-\[\]\\^{}|`]*$"/>
-            <input type="text" placeholder="channels" id="channels"
-                   data-l10n-id="channels"/>
+            <span data-l10n-id="host">Host</span>:
+            <input type="text" id="host" data-l10n-id="defaultHost"/>
+            <span data-l10n-id="username">User</span>:
+            <input type="text" id="username" data-l10n-id="defaultUsername"
+             pattern="^[a-z_\-\[\]\\^{}|`][a-z0-9_\-\[\]\\^{}|`]*$"/>
+            <span data-l10n-id="channels">Channels</span>:
+            <input type="text" id="channels" data-l10n-id="defaultChannels"/>
           </div>
           <button id="connect" class="moz-button" data-l10n-id="connect">
             Connect
