@@ -93,15 +93,15 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.nick = username;
 
     if (!host) {
-      host = document.webL10n.get('host');
+      host = document.webL10n.get('defaultHost');
     }
 
     if (!username) {
-      username = document.webL10n.get('username');
+      username = document.webL10n.get('defaultUsername');
     }
 
     if (!channels) {
-      channels = document.webL10n.get('channels');
+      channels = document.webL10n.get('defaultChannels');
     }
 
     if (userEle.validity.patternMismatch) {
