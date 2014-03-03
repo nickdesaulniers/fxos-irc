@@ -100,10 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
       var random = Math.floor(Math.random() * 10000)
       username = document.webL10n.get('defaultUsername');
       username += random;
-      var usernameInput = document.getElementById('username');
-      var placeholder = usernameInput.placeholder;
-      placeholder += random;
-      usernameInput.placeholder = placeholder;
     }
 
     if (!channels) {
