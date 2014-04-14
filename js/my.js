@@ -77,6 +77,12 @@ document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.nick) {
     $("username").value = localStorage.nick;
   }
+  if (localStorage.host) {
+    $("host").value = localStorage.host;
+  }
+    if (localStorage.channels) {
+    $("channels").value = localStorage.channels;
+  }
 
   $("connect").addEventListener("click", function () {
     var hostEle = $("host");
@@ -91,7 +97,10 @@ document.addEventListener("DOMContentLoaded", function () {
     var secure = $("secure").checked;
 
     localStorage.nick = username;
-
+	localStorage.host=host;
+	localStorage.channels=channels;
+	
+	
     if (!host || !username) {
       console.error("No username or host");
       return;
