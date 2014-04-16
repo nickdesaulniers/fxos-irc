@@ -97,8 +97,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var secure = $("secure").checked;
 
     localStorage.nick = username;
-	localStorage.host=host;
-	localStorage.channels=channels;
+    localStorage.host=host;
+    localStorage.channels=channels;
 	
 	
     if (!host || !username) {
