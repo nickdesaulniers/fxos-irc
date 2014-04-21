@@ -77,6 +77,12 @@ document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.nick) {
     $("username").value = localStorage.nick;
   }
+  if (localStorage.host) {
+    $("host").value = localStorage.host;
+  }
+    if (localStorage.channels) {
+    $("channels").value = localStorage.channels;
+  }
 
   $("connect").addEventListener("click", function () {
     var hostEle = $("host");
@@ -90,7 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var port = portEle.value;
     var secure = $("secure").checked;
 
-    localStorage.nick = username;
 
     if (!host) {
       host = document.webL10n.get('defaultHost');
@@ -121,6 +126,10 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("offline");
       return;
     }
+
+    localStorage.nick = username;
+    localStorage.host = host;
+    localStorage.channels = channels;
 
     // cache clients by host
     var client = clients[host];
