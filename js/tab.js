@@ -207,7 +207,7 @@ Tab.prototype = {
     }
     this.card.parentNode.removeChild(this.card);
     this.tab.parentNode.removeChild(this.tab);
-    document.getElementById("container").shuffleTo(0);
+    document.getElementById("container").showCard(0);
   },
 
   escapeChar: function (char, i, string) {
