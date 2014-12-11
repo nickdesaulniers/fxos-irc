@@ -51,14 +51,6 @@ function joinChans (channels, client, username, host) {
 
     client.join(chanAndPass.join(" "), function () {
       console.log("Joined ", chan);
-      new Tab({
-        chan: chan,
-        password: password,
-        client: client,
-        nick: username,
-        host: host,
-        userList: true,
-      });
     });
   });
 };
@@ -213,6 +205,17 @@ document.addEventListener("DOMContentLoaded", function () {
             msg.tab.classList.add("glow");
           }
         }
+      });
+      client.addListener('join', function(channel, nick, message) {
+          if (nick.toLowerCase() === username.toLowerCase()) {
+              new Tab({
+                  chan: channel,
+                  client: client,
+                  nick: username,
+                  host: host,
+                  userList: true,
+              });
+          }
       });
     }
   });
