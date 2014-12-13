@@ -210,7 +210,8 @@ document.addEventListener("DOMContentLoaded", function () {
               var request = window.navigator.mozApps.getSelf();
 
               request.onsuccess = function() {
-                  request.result.launch();
+                    request.result.launch();
+                    document.getElementById("container").showCard(chans.indexOf(from) + 1);
               };
           }
 
