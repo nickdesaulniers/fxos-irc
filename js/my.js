@@ -204,7 +204,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if ($("container").selectedCard.id !== msg.card.id) {
           // This hack is because origin is not supported in manifests for < 1.1.
-          sendNotification(from, { body: Utf8.decode(text), icon: img });
+          var notif = sendNotification(from, { body: Utf8.decode(text), icon: img });
+
+          notif.onclick = function() {
+              var request = window.navigator.mozApps.getSelf();
+
+              request.onsuccess = function() {
+                  request.result.launch();
+              };
+          }
+
           if (!msg.tab.classList.contains("glow")) {
             msg.tab.classList.add("glow");
           }
