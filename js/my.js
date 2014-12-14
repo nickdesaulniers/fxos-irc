@@ -232,3 +232,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+function parseCommand(client, cmd) {
+  cmd = cmd.replace(/^\//, '');
+
+  var args = cmd.match(/(\S+) ?(\S+)? ?(.*)/);
+  client.send(args[1], args[2], args[3]);
+}
