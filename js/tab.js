@@ -145,7 +145,7 @@ Tab.prototype = {
       this.input.value = null;
 
       if (say[0] === "/") {
-        return parseCommand(this.client, say);
+        return parseCommand(this.client, this.nick, this.host, say);
       }
 
       this.addText(this.nick, say);
