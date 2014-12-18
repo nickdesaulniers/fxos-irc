@@ -76,7 +76,7 @@ html, body {
   transition: all linear .25s;
 }
 
-.connect input[type=text], #advanced input[type=text] {
+.connect input[type=text], #advanced input[type=text], #advanced input[type=password] {
   height: 30px;
   font-size: large;
   width: 100%;
