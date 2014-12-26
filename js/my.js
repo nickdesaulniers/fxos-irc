@@ -220,6 +220,14 @@ document.addEventListener("DOMContentLoaded", function () {
               });
           }
       });
+      client.addListener('nick', function(oldNick, newNick, channels, message) {
+        if (oldNick === username) {
+          username = newNick;
+        }
+      });
+      client.addListener('registered', function(message) {
+        username = message.args[0];
+      });
     }
   });
 });
