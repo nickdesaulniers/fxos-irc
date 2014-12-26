@@ -101,6 +101,12 @@ function Tab (opts) {
     }.bind(this));
     backLog.appendChild(frag);
   }.bind(this));
+
+  this.client.addListener('nick', function(oldNick, newNick, channels, message) {
+    if (oldNick === this.nick) {
+      this.nick = newNick;
+    }
+  }.bind(this));
 };
 
 Tab.addControls = function (card, onClose, onUserList) {
