@@ -72,8 +72,23 @@ document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.host) {
     $("host").value = localStorage.host;
   }
-    if (localStorage.channels) {
+  if (localStorage.channels) {
     $("channels").value = localStorage.channels;
+  }
+  if (localStorage.port) {
+    $("port").value = localStorage.port;
+  }
+
+  /* Local Storage is strings! */
+  if (+localStorage.secure) {
+    $("secure").checked = true;
+  } else {
+    $("secure").checked = false;
+  }
+
+  if (localStorage.password) {
+    $("rememberpass").checked = true;
+    $("connectionPass").value = localStorage.password;
   }
 
   $("connect").addEventListener("click", function () {
@@ -124,6 +139,14 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.nick = username;
     localStorage.host = host;
     localStorage.channels = channels;
+    localStorage.port = port;
+    localStorage.secure = secure;
+
+    if ($("rememberpass").checked) {
+      localStorage.password = connectionPass;
+    } else {
+      localStorage.password = '';
+    }
 
     // cache clients by host
     var client = clients[host];
