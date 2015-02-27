@@ -143,6 +143,11 @@ Tab.prototype = {
     var say = this.input.value;
     if (e.keyCode === 13 && say) {
       this.input.value = null;
+
+      if (say[0] === "/") {
+        return parseCommand(this.client, this.nick, this.host, say);
+      }
+
       this.addText(this.nick, say);
       this.client.say(this.chan, Utf8.encode(say));
     }

@@ -255,3 +255,28 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+function parseCommand(client, nick, host, cmd) {
+  var args = cmd.trimRight().split(' ');
+
+  if (args[0].length === 1) {
+    return;
+  }
+
+
+  if (args[0] === '/query' && args[1]) {
+    var to = args[1];
+
+    if (!privMSG[to]) {
+      privMSG[to] = new Tab({
+        chan: to,
+        client: client,
+        nick: nick,
+        host: host,
+      });
+    }
+
+    return;
+  }
+
+  client.send(args.shift().slice(1), args.shift(), args.join(' '));
+}
