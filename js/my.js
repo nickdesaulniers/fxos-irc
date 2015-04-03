@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
               request.onsuccess = function() {
                     request.result.launch();
-                    document.getElementById("container").showCard(chans.indexOf(from) + 1);
+                    Tab.showTab(host, from);
                     notif.close();
               };
           }
