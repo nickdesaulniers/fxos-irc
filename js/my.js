@@ -207,13 +207,18 @@ document.addEventListener("DOMContentLoaded", function () {
           var notif = sendNotification(from, { body: Utf8.decode(text), icon: img });
 
           notif.onclick = function() {
-              var request = window.navigator.mozApps.getSelf();
+              if (document.visibilityState === 'hidden') {
+                  var request = window.navigator.mozApps.getSelf();
 
-              request.onsuccess = function() {
-                    request.result.launch();
-                    Tab.showTab(host, from);
-                    notif.close();
-              };
+                  request.onsuccess = function() {
+                        request.result.launch();
+                        Tab.showTab(host, from);
+                        notif.close();
+                  };
+              } else {
+                  Tab.showTab(host, from);
+                  notif.close();
+              }
           }
 
           if (!msg.tab.classList.contains("glow")) {
