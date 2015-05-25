@@ -20,14 +20,13 @@ var FlatUIColors = [
 
 function Tab (opts) {
   var host = opts.host.replace(/\./g, "-");
-  var channel = opts.chan;
   var color = FlatUIColors[FlatUIColors.length * Math.random() | 0];
 
   var card = document.createElement("x-card");
   card.id = "__" + tabCounter++;
 
   card.dataset.host = host;
-  card.dataset.channel = channel;
+  card.dataset.channel = opts.chan;
 
   card.style.backgroundColor = color;
   card.addEventListener("show", function () {
