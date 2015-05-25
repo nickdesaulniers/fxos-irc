@@ -24,7 +24,10 @@ function Tab (opts) {
 
   var card = document.createElement("x-card");
   card.id = "__" + tabCounter++;
-  card.classList.add(host);
+
+  card.dataset.host = host;
+  card.dataset.channel = opts.chan;
+
   card.style.backgroundColor = color;
   card.addEventListener("show", function () {
     if (this.tab.classList.contains("glow")) {
@@ -36,7 +39,6 @@ function Tab (opts) {
   tab.setAttribute("target-selector", "x-deck x-card#" + card.id);
   tab.textContent = opts.chan;
   tab.style.backgroundColor = color;
-  tab.className = host;
 
   var log = document.createElement("div");
   log.className = "chat";
@@ -239,3 +241,7 @@ Tab.prototype = {
 
 };
 
+Tab.showTab = function(host, chan) {
+  var tab = document.querySelector('[data-host=' + host + '][data-channel=' + chan + ']');
+  document.getElementById('container').showCard(tab);
+};
