@@ -55,7 +55,7 @@ uri = ios.newURI(host, null, null);
 perm.add(uri, 'tcp-socket', 1);
 ```
 
-This will allow `http://firesea.mozilla.org:8000` permssion to create and use
+This will allow `http://firesea.mozilla.org:8000` permission to create and use
 TCP sockets.  Tailor as needed.
 
 XXX: TODO find out how to remove permission since it's not in about:permissions
